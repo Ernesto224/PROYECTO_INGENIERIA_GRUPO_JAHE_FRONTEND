@@ -27,10 +27,10 @@ El proyecto también se relaciona con un **drive** que almacena archivos relevan
 ### Clonar los repositorios
 ```bash
 # Clonar el frontend
-git clone https://github.com/usuario/frontend-reservacion-hoteles.git](https://github.com/Ernesto224/PROYECTO_INGENIERIA_GRUPO_JAHE_FRONTEND.git
+git clone https://github.com/Ernesto224/PROYECTO_INGENIERIA_GRUPO_JAHE_FRONTEND.git
 
 # Clonar el backend
-git clone https://github.com/usuario/backend-reservacion-hoteles.git](https://github.com/Ernesto224/PROYECTO_INGENIERIA_GRUPO_JAHE_BACKEND.git
+git clone https://github.com/Ernesto224/PROYECTO_INGENIERIA_GRUPO_JAHE_BACKEND.git
 ```
 
 ## Estructura del Proyecto
