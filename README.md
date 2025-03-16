@@ -27,43 +27,10 @@ El proyecto también se relaciona con un **drive** que almacena archivos relevan
 ### Clonar los repositorios
 ```bash
 # Clonar el frontend
-git clone https://github.com/usuario/frontend-reservacion-hoteles.git
+git clone https://github.com/usuario/frontend-reservacion-hoteles.git](https://github.com/Ernesto224/PROYECTO_INGENIERIA_GRUPO_JAHE_FRONTEND.git
 
 # Clonar el backend
-git clone https://github.com/usuario/backend-reservacion-hoteles.git
-```
-
-### Configuración del Backend
-1. Instalar dependencias:
-```bash
-cd backend-reservacion-hoteles
-npm install  # o el gestor de paquetes correspondiente
-```
-2. Configurar variables de entorno en un archivo `.env`:
-```
-DB_HOST=localhost
-DB_USER=root
-DB_PASS=contraseña
-JWT_SECRET=clave_secreta
-```
-3. Iniciar el servidor:
-```bash
-npm start
-```
-
-### Configuración del Frontend
-1. Instalar dependencias:
-```bash
-cd frontend-reservacion-hoteles
-npm install
-```
-2. Configurar variables de entorno:
-```
-REACT_APP_API_URL=http://localhost:5000
-```
-3. Iniciar el proyecto:
-```bash
-npm start
+git clone https://github.com/usuario/backend-reservacion-hoteles.git](https://github.com/Ernesto224/PROYECTO_INGENIERIA_GRUPO_JAHE_BACKEND.git
 ```
 
 ## Estructura del Proyecto
@@ -73,24 +40,4 @@ npm start
 ├── backend-reservacion-hoteles   # Lógica del negocio y base de datos
 ├── drive                         # Archivos compartidos (documentación, diagramas, etc.)
 ```
-
-## Funcionalidades
-- Registro e inicio de sesión de usuarios
-- Búsqueda y filtrado de hoteles
-- Realización y cancelación de reservas
-- Integración con pasarelas de pago
-- Gestión de administradores y hoteles
-
-## Contribución
-Si deseas contribuir al proyecto, sigue estos pasos:
-1. Realiza un fork del repositorio.
-2. Crea una rama con tu función o corrección (`git checkout -b nueva-funcionalidad`).
-3. Realiza cambios y haz commit (`git commit -m 'Descripción del cambio'`).
-4. Envía un pull request para su revisión.
-
-## Licencia
-Este proyecto está bajo la licencia [Nombre de la licencia, por ejemplo, MIT].
-
-## Contacto
-Para consultas o soporte, puedes contactar a [Tu correo o redes sociales].
 
