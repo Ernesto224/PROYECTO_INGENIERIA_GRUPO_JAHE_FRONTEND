@@ -27,7 +27,11 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 }
 
 
-
+.pagina {
+  padding: 30px;
+  overflow-y: auto;
+  max-height: 100%; /* Esto asegura que el contenedor tenga un límite de altura para que se active el scroll cuando sea necesario */
+}
 
 
 /*Animacion*/

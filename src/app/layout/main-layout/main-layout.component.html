@@ -1,4 +1,31 @@
-<p>main-layout works!</p>
 
+<div class="layout">
 
-<router-outlet></router-outlet>
+    <app-header></app-header>
+  
+    <div class="layout-main">
+
+        <div class="layout-main-container">
+        
+            <div class="layout-main-sidebar-publicidad">
+                <app-sidebar></app-sidebar>
+                <app-publicidad></app-publicidad>
+            </div>
+
+            <div class="layout-main-pagesContent">
+                <router-outlet></router-outlet>
+
+                  <!-- Publicidad se mueve aquí solo en pantallas > 800px -->
+                @if(isMobile){
+                    <app-publicidad></app-publicidad>
+                }
+              
+            </div>
+
+        </div>
+
+    </div>
+
+    <app-footer></app-footer>
+
+</div>
