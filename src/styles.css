@@ -19,6 +19,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   --bg-color-secundario: #daa520;
   --sub-color: #B6CEFC;
   --white-color: #FFF;
+  --text-color: rgb(139, 139, 139);
     
   /*===== Fuente y tipografia =====*/
   --body-font: 'Poppins', sans-serif;
@@ -28,9 +29,12 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 
 .pagina {
-  padding: 30px;
+  padding: 20px;
   overflow-y: auto;
   max-height: 100%; /* Esto asegura que el contenedor tenga un límite de altura para que se active el scroll cuando sea necesario */
+
+  color: rgb(139, 139, 139);
+  font-family: var(--body-font);
 }
 
 

@@ -1,12 +1,15 @@
 
 .sidebar{
-    background-color: green;
-    padding: 10px;
+    
+    padding: 8px;
     border-radius: 15px;
    display: flex;
    flex-direction: column;
 
    margin-bottom: 20px;
+
+   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  
 
   
 }
@@ -15,6 +18,8 @@
 
 a{
   text-decoration: none;
+
+
 }
 
   
@@ -25,7 +30,7 @@ a{
     column-gap: .75rem;
     padding: .75rem;
     padding: .50rem .75rem;
-    color: var(--white-color);
+    color: var(--text-color);
     border-radius: .5rem;
     /* margin-bottom: 1rem; */
     margin-bottom: 5px ;
@@ -36,8 +41,8 @@ a{
  
   
   .nav__link:hover{
-    background-color: #daa520;
-    /* background-color: #ffffff4d; */
+    background: linear-gradient(135deg, #00c1e2, #00eaf2, #00fafd);
+    color: white;
   }
   .nav__icon{
     font-size: 1.25rem;
@@ -49,8 +54,12 @@ a{
  
 
   /*Active links menu*/
-  .active{
-    background-color: var(--bg-color-secundario);
-  }
+  .active {
+    background: linear-gradient(135deg, #00c1e2, #00eaf2, #00fafd);
+    background: linear-gradient(135deg, #00c1e2, #00ebf6);
+    color: white;
+}
+
+
   
   

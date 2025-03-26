@@ -1,6 +1,11 @@
 
 .publicidad{
-    background-color: yellow;
+    /* background-color: yellow; */
     border-radius: 15px;
-   height: 150px;
+   
+}
+
+.publicidad img{
+    width: 100%;
+    border-radius: 15px;
 }

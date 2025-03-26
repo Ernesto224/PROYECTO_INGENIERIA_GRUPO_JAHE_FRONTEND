@@ -1,0 +1,23 @@
+
+.inicio-pagina{
+    /* background-color: red; */
+}
+
+.inicio-pagina img {
+    height: 400px;
+    width: 100%;
+    border-radius: 15px;
+    object-fit: cover;  /* Evita la deformación y llena el espacio */
+    object-position: center;  /* Centra la imagen */
+    margin-bottom: 30px;
+}
+
+.inicio-pagina h2 {
+   margin-bottom: 15px;
+   padding: 20px;
+}
+
+.inicio-pagina p {
+    line-height: 1.8;  /* Aumenta el espacio entre líneas */
+    padding: 20px;
+}
