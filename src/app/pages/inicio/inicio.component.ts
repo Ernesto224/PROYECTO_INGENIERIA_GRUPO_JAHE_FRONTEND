@@ -26,7 +26,7 @@ export class InicioComponent implements OnInit {
         this.datosHome = response;
       },
       (error: any) => {
-        // manejar error
+        // Manejar error
       }
    )};
 
