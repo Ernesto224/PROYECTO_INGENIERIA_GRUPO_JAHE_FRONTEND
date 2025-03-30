@@ -1,17 +1,6 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { InicioServiceService } from '../../Core/services/InicioService/inicio-service.service';
-
-export interface Imagen {
-  idImagen: number;
-  url: string;
-}
-
-export interface Home {
-  idHome: number;
-  descripcion: string;
-  imagen: Imagen;
-}
-
+import { Home } from '../../Core/models/HomeDTO';
 
 @Component({
   selector: 'app-inicio',
@@ -25,7 +14,7 @@ export class InicioComponent implements OnInit {
 
   constructor(private inicioService: InicioServiceService) { }
 
-  datosHome: Home | null = null;
+  datosHome!: Home;
 
   ngOnInit(): void {
     this.obtenerDatosHome();
@@ -37,7 +26,7 @@ export class InicioComponent implements OnInit {
         this.datosHome = response;
       },
       (error: any) => {
-        // Manejar error
+        // manejar error
       }
    )};
 
