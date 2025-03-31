@@ -1,11 +1,8 @@
-.pagina.animacion {
-    display: flex; 
-    gap: 20px; 
-}
 .pagina {
-    display: flex;
     flex-direction: column;
     align-items: center;
+    display: flex; 
+    gap: 20px; 
   }
   
   .contenedor-galeria {
