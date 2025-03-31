@@ -1,3 +1,16 @@
 <div class="pagina animacion">
-    <p>Facilidades</p>
+
+    <h1>Facilidades</h1>
+
+    <div class="facilities-container">
+        <mat-card class="facility-card" *ngFor="let facility of facilidades">
+            <div class="facility-content">
+                <img class="mat-card-image" [src]="facility.imagen.url" alt="Facility Image">
+                <mat-card-content>
+                    <p>{{ facility.descripcion }}</p>
+                </mat-card-content>
+            </div>
+        </mat-card>
+    </div>
+
 </div>
