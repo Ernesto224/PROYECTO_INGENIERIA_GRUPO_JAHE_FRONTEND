@@ -1,7 +1,7 @@
+import { Imagen } from './ImagenDTO';
+
 export interface SobreNosotrosDTO {
-    id?: number;
-    nombre: string;
-    descripcion: string;
-    usuarioID: number;
-    oficinaID: number;
+  idSobreNosotros?: number;
+  descripcion: string;
+  imagenes: Imagen[];
 }
