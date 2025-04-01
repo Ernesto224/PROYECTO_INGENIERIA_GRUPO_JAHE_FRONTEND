@@ -42,4 +42,13 @@ mat-card-content {
     text-align: left;
     width: 10em;
     height: 10em;
+    width: 100%;
+}
+
+
+@media all and (max-width:775px){
+    .facility-content {
+        flex-direction: column;
+    }
+   
 }
