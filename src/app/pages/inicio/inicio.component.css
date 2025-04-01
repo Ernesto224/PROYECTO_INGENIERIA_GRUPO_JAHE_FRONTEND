@@ -21,3 +21,12 @@
     line-height: 1.8;  /* Aumenta el espacio entre líneas */
     padding: 20px;
 }
+
+.titulo-pagina {
+    font-family: "Caveat", cursive;
+    font-optical-sizing: auto;
+    font-weight: 800;
+    font-style: bold;
+    font-size: 40px;
+    color: rgb(79, 79, 79);
+}
