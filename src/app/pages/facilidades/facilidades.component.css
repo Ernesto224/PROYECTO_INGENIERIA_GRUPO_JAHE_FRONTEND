@@ -1,0 +1,45 @@
+.facilities-container {
+    margin: 20px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.facility-card {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 10px;
+    background-color: white;
+    cursor: pointer;
+    transition: transform 0.3s ease-in-out;
+    width: 90%;
+}
+
+.facility-card:hover {
+    transform: scale(1.1);
+    /* Increases the size of the card */
+}
+
+.facility-content {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+}
+
+.mat-card-image {
+    width: 15em;
+    height: 15em;
+    object-fit: cover;
+    margin: 10px;
+    border-radius: 15px;
+}
+
+mat-card-content {
+    flex: 1;
+    text-align: left;
+    width: 10em;
+    height: 10em;
+}
