@@ -1,11 +1,20 @@
 .pagina {
+    display: flex;
     flex-direction: column;
-    align-items: center;
-    display: flex; 
-    gap: 20px; 
-  }
-  
-  .contenedor-galeria {
+    gap: 15px;
+    padding: 20px 0;
+}
+
+.titulo-pagina {
+    font-family: "Caveat", cursive;
+    font-optical-sizing: auto;
+    font-weight: 800;
+    font-style: bold;
+    font-size: 40px;
+    color: rgb(79, 79, 79);
+}
+
+.contenedor-galeria {
     display: flex;
     gap: 20px;
     align-items: center;
@@ -36,4 +45,3 @@
 .conjunto-imagenes img:hover {
     transform: scale(1.1);
 }
-  
