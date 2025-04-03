@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { ComoLlegarServiceService } from '../../Core/services/ComoLlegarService/como-llegar-service.service';
+import { DireccionDTO } from '../../Core/models/DireccionDTO';
 
 @Component({
   selector: 'app-como-llegar',
@@ -10,13 +11,20 @@ import { ComoLlegarServiceService } from '../../Core/services/ComoLlegarService/
 })
 export class ComoLlegarComponent {
   urlUbicacion: string = '';
-  textoComoLlegar: string =
-    'Para llegar al Hotel JAHE, dirígete hacia la zona donde se encuentra ubicado y sigue las indicaciones principales según tu medio de transporte. Si vas en coche, utiliza aplicaciones de navegación como Google Maps para la mejor ruta disponible. Si prefieres el transporte público, identifica las rutas de autobús o metro cercanas que te acerquen al destino. Una vez en la zona, busca señales o referencias cercanas para ubicar fácilmente la entrada del hotel.z';
+  datosDireccion!: DireccionDTO;
   constructor(private comoLlegarService: ComoLlegarServiceService) {}
-  ngOnOnit(): void {
+  ngOnInit(): void {
     this.obtenerDatosComoLlegar();
-  }
+}
   obtenerDatosComoLlegar() {
-    this.comoLlegarService.obtenerComoLlegar().subscribe();
+    this.comoLlegarService.obtenerComoLlegar().subscribe({
+      next: (response: DireccionDTO) => {
+        this.datosDireccion = response;
+        console.log(this.datosDireccion);
+      },
+      error: (err) => {
+        console.error('Error al obtener los datos:', err);
+      },
+    });
   }
 }
