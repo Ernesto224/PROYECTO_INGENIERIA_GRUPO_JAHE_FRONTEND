@@ -1,0 +1,58 @@
+
+.contenedor-tarifas{
+    margin-top: 20px;
+    padding: 10px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.tarifa-item{
+    padding: 10px;
+    margin-bottom: 20px;
+    margin-right: 20px;
+    border-radius: 15px;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+    display: flex;
+    flex-direction: column;
+    height: 450px;
+    width: 45%;
+}
+
+.tarifa-item-img{
+    height: 50%; 
+    overflow: hidden;
+}
+
+.tarifa-item-img img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 15px;
+}
+
+.tarifa-item-descripcion{
+    width: 100%;
+    height: 50%;
+}
+
+.tarifa-item-descripcion h3{
+   font-family: var(--titulo-font);
+   font-size: 40px;
+   margin-bottom: 10px; 
+}
+.tarifa-item-descripcion h5{
+    margin-bottom: 15px;
+}
+
+
+
+@media all and (max-width:890px){
+    .tarifa-item{
+        width: 100%;
+        margin-right: 0px;
+    }
+    
+}
+    
