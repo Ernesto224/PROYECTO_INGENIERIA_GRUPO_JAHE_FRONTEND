@@ -1,6 +1,6 @@
 <div class="pagina animacion">
   <div class="pagina">
-    <h2 class="titulo-pagina ">Sobre Nosotros</h2>
+    <h2 class="titulo-pagina">Sobre Nosotros</h2>
     <p>{{ datosSobreNosotros?.descripcion }}</p>
     <div class="contenedor-galeria">
       <div class="galeria">
@@ -13,12 +13,12 @@
       </div>
       <div class="conjunto-imagenes">
         @for (imagen of datosSobreNosotros?.imagenes; track imagen.idImagen) {
-        <img
-          [src]="imagen.url"
-          alt="Imagen de galería"
-          (click)="seleccionarImagen(imagen.url)"
-        />
-        }
+          <img
+            [src]="imagen.url"
+            alt="Imagen de galería"
+            (click)="seleccionarImagen(imagen.url)"
+          />
+          }
       </div>
     </div>
   </div>
