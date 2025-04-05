@@ -30,6 +30,7 @@ body {
   --text-color: rgb(139, 139, 139);
 
   /*===== Fuente y tipografia =====*/
+  --titulo-font:'Caveat', cursive;
   --body-font: 'Poppins', sans-serif;
   --normal-font-size: 1rem;
   --small-font-size: .875rem;
