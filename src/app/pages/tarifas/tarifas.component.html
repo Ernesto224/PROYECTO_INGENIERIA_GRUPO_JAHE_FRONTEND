@@ -1,3 +1,21 @@
 <div class="pagina animacion">
-    <p>Tarifas</p>
+    <h2 class="titulo-pagina">Tarifas</h2>
+
+    <div class="contenedor-tarifas">
+        @for (tarifa of listaTarifas; track tarifa.nombre) {
+            <div class="tarifa-item">
+                <div class="tarifa-item-img">
+                    <img [src]="tarifa.imagen.url" [alt]="tarifa.nombre + ' imagen'">
+                </div>
+                <div class="tarifa-item-descripcion">
+                    <h3>{{ tarifa.nombre }}</h3>
+                    <h5>Desde ${{ tarifa.tarifaDiaria }} pers/noche</h5>
+                    <p>{{ tarifa.descripcion }}</p>
+                </div>
+            </div>
+        } @empty {
+            <p>No hay tarifas disponibles.</p>
+        }
+    </div>
+    
 </div>
