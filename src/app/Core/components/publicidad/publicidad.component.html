@@ -1,3 +1,23 @@
-<div class="publicidad">
-    <img src="publicidad01.jpg" alt="publicidad01">
+<div *ngIf="datosPublicidades.length > 0" class="carrusel" 
+    (mouseover)="detenerCarrusel()" (mouseleave)="iniciarCarrusel()">
+    <div class="carrusel-container" [style.transform]="getCarruselStyle()">
+        <div class="item" *ngFor="let publicidad of datosPublicidades">
+            <a [href]="publicidad.enlacePublicidad" target="_blank">
+            <img [src]="publicidad.imagen.url" alt="Publicidad" />
+            </a>
+
+
+        </div>
+    </div>
+
+    <button class="prev" (click)="moveSlide(-1)">&#10094;</button>
+    <button class="next" (click)="moveSlide(1)">&#10095;</button>
+
+    <div class="indicadores">
+        <span *ngFor="let publicidad of datosPublicidades; let i = index"
+            [class.activo]="esPuntoActivo(i)"
+            (click)="currentSlide = i">
+        </span>
+    </div>
+
 </div>

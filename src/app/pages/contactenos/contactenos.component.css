@@ -1,0 +1,22 @@
+.pagina {
+    padding: 40px;
+    text-align: left;
+}
+.titulo-pagina {
+    font-family: "Caveat", cursive;
+    font-optical-sizing: auto;
+    font-weight: 800;
+    font-style: bold;
+    font-size: 40px;
+    color: rgb(79, 79, 79);
+}
+
+.subtitulo {
+    font-size: 20px;
+    margin-bottom: 15px;
+}
+
+.info {
+    font-size: 18px;
+    margin: 10px 0;
+}

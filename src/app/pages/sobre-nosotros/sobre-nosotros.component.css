@@ -1,1 +1,52 @@
+.pagina {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    padding: 20px 0;
+}
 
+.titulo-pagina {
+    font-family: "Caveat", cursive;
+    font-optical-sizing: auto;
+    font-weight: 800;
+    font-style: bold;
+    font-size: 40px;
+    color: rgb(79, 79, 79);
+}
+
+.contenedor-galeria {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: left;
+    align-items: flex-start;
+}
+
+
+.galeria img {
+    width: 400px;
+    height: 400px;
+    object-fit: cover;
+    border: 2px solid #000;
+    margin-left: 0;
+}
+
+.conjunto-imagenes {
+    display: flex;
+    gap: 10px;
+}
+
+.conjunto-imagenes img {
+    width: 70px;
+    height: 70px;
+    object-fit: cover;
+    cursor: pointer;
+    border: 1px solid #000;
+    margin-top: 50px; 
+}
+
+
+.conjunto-imagenes img:hover {
+    transform: scale(1.1);
+    transition: transform 0.3s ease;
+}

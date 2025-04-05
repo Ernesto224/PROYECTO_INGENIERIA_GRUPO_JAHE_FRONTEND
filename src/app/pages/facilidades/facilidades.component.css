@@ -1,0 +1,56 @@
+.facilities-container {
+    margin-top: 20px;
+    display: flex;
+    padding: 10px;
+    width: 100%;
+    align-items: center;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.facility-card {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    background-color: white;
+    cursor: pointer;
+    transition: transform 0.3s ease-in-out;
+    width: 95%;
+}
+
+/*
+.facility-card:hover {
+    transform: scale(1.1);
+}
+*/
+
+.facility-content {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+}
+
+.mat-card-image {
+    width: 30em;
+    height: 15em;
+    object-fit: cover;
+    margin: 10px;
+    border-radius: 15px;
+}
+
+mat-card-content {
+    flex: 1;
+    text-align: left;
+    width: 10em;
+    height: 10em;
+    width: 100%;
+}
+
+
+@media all and (max-width:775px){
+    .facility-content {
+        flex-direction: column;
+    }
+   
+}

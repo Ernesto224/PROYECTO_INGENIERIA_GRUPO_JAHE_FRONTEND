@@ -1,5 +1,6 @@
-import { Component, inject } from '@angular/core';
-import { CategoriasService } from '../../Core/services/categorias.service';
+import { Component, OnInit } from '@angular/core';
+import { InicioServiceService } from '../../Core/services/InicioService/inicio-service.service';
+import { Home } from '../../Core/models/HomeDTO';
 
 @Component({
   selector: 'app-inicio',
@@ -8,9 +9,27 @@ import { CategoriasService } from '../../Core/services/categorias.service';
   templateUrl: './inicio.component.html',
   styleUrl: './inicio.component.css'
 })
-export class InicioComponent {
 
-  //como ejemplo
-  categoriasService = inject(CategoriasService);
+export class InicioComponent implements OnInit {
+
+  constructor(private inicioService: InicioServiceService) { }
+
+  datosHome!: Home;
+
+  ngOnInit(): void {
+    this.obtenerDatosHome();
+  }
+
+  obtenerDatosHome() {
+    this.inicioService.obtenerDatosHome().subscribe(
+      (response: Home) => {
+        this.datosHome = response;
+      },
+      (error: any) => {
+        // Manejar error
+      }
+   )};
+
+
 
 }
