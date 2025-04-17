@@ -1,3 +1,119 @@
 <div class="pagina animacion">
-    <p>Reservar en Línea</p>
+  <h1>Reservar Habitación</h1>
+
+  <div class="form-group">
+    <label for="tipoHabitacion">Tipo de Habitación</label>
+    <select id="tipoHabitacion" [(ngModel)]="tipoHabitacionSeleccionado" class="form-control">
+      <option value="0" disabled selected>Seleccione un tipo</option>
+      <option *ngFor="let tipo of tiposDeHabitacion" [value]="tipo.idTipoDeHabitacion">
+        {{ tipo.nombre }}
+      </option>
+    </select>
+  </div>
+
+  <div class="form-group">
+    <label for="fechaLlegada">Fecha de Llegada</label>
+    <input type="date" id="fechaLlegada" [(ngModel)]="fechaLlegada" class="form-control" (change)="fechaSalida = ''"
+    [min]="fechaActual">
+  </div>
+
+  <div class="form-group">
+    <label for="fechaSalida">Fecha de Salida</label>
+    <input type="date" id="fechaSalida" [(ngModel)]="fechaSalida" class="form-control"
+      [min]="fechaLlegada || fechaActual">
+  </div>
+
+  <button (click)="obtenerHabitacionDisponible()"
+    [disabled]="!tipoHabitacionSeleccionado || !fechaLlegada || !fechaSalida">
+    Buscar Habitación Disponible
+  </button>
+
+  <div *ngIf="isLoading" class="overlay-loading">
+    <div class="spinner"></div>
+    <p>Procesando reserva...</p>
+  </div>
+
+  <div *ngIf="errorMessage" class="error-message">
+    {{ errorMessage }}
+  </div>
+
+  <div class="datosReserva">
+    <div class="factura-container" *ngIf="factura.items.length > 0">
+      <h2>Resumen de Reserva</h2>
+
+      <table class="factura-table">
+        <thead>
+          <tr>
+            <th>Habitación</th>
+            <th>Tipo</th>
+            <th>Fechas</th>
+            <th>Días</th>
+            <th>Subtotal</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of factura.items">
+            <td>{{ item.habitacion.numero }}</td>
+            <td>{{ item.habitacion.tipoDeHabitacion.nombre }}</td>
+            <td>{{ item.fechaLlegada }} - {{ item.fechaSalida }}</td>
+            <td>{{ item.cantidadDias }}</td>
+            <td>${{ (item.tarifaDiaria * item.cantidadDias) | number }}</td>
+            <td>
+              <button (click)="removerDeFactura(item.habitacion.idHabitacion)" class="btn-eliminar">
+                ✕
+              </button>
+            </td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr>
+            <td colspan="4" class="total-label">Total:</td>
+            <td colspan="2" class="total-amount">${{ factura.total | number }}</td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+
+
+    <div *ngIf="factura.items.length > 0">
+      <button *ngIf="!mostrarFormularioCliente" (click)="mostrarFormularioCliente = true"
+        class="btn-mostrar-formulario">
+        Ingresar Datos para Reservar
+      </button>
+
+      <div *ngIf="mostrarFormularioCliente" class="formulario-cliente">
+        <h3>Datos del Cliente</h3>
+
+        <div class="campo-formulario">
+          <label>Nombre:</label>
+          <input [(ngModel)]="cliente.Nombre" placeholder="Nombre">
+        </div>
+
+        <div class="campo-formulario">
+          <label>Apellidos:</label>
+          <input [(ngModel)]="cliente.Apellidos" placeholder="Apellidos">
+        </div>
+
+        <div class="campo-formulario">
+          <label>Email:</label>
+          <input [(ngModel)]="cliente.Email" placeholder="email@ejemplo.com">
+        </div>
+
+        <div class="campo-formulario">
+          <label>Tarjeta:</label>
+          <input [(ngModel)]="cliente.TarjetaDePago" placeholder="Número de tarjeta">
+        </div>
+
+        <button (click)="enviarReservaCompleta()" class="btn-enviar-reserva" [disabled]="isLoading">
+          {{ isLoading ? 'Procesando...' : 'Confirmar Reserva' }}
+        </button>
+      </div>
+    </div>
+  </div>
+
+
+
+
+
 </div>
