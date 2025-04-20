@@ -55,7 +55,7 @@ export class ReservaServiceService {
       );
   }
 
-  agregarReservaCompleta(reserva: ReservaCompletaDTO): Observable<boolean> {
-    return this.http.post<boolean>(`${this.publicidadUrl}`, reserva);
+  agregarReservaCompleta(reserva: ReservaCompletaDTO): Observable<String[]> {
+    return this.http.post<String[]>(`${this.publicidadUrl}`, reserva);
   }
 }

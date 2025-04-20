@@ -9,6 +9,20 @@ import { ReservaDTO } from '../../Core/models/ReservaDTO';
 import { ReservaCompletaDTO } from '../../Core/models/ReservaCompletaDTO';
 import { finalize } from 'rxjs/operators';
 import { TipoHabitacionDTO } from '../../Core/models/TipoHabitacionDTO';
+import { MatTableModule } from '@angular/material/table';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatInputModule } from '@angular/material/input';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatCardModule } from '@angular/material/card';
+
+
+
 
 
 export interface ItemFactura {
@@ -26,7 +40,17 @@ export interface Factura {
   selector: 'app-reservar-en-linea',
   standalone: true,
   imports: [CommonModule,
-    FormsModule],
+    FormsModule,
+    MatTableModule,
+    MatIconModule,
+    MatButtonModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatInputModule,
+    MatProgressSpinnerModule,
+    MatCardModule],
   providers: [ReservaServiceService],
   templateUrl: './reservar-en-linea.component.html',
   styleUrl: './reservar-en-linea.component.css'
@@ -36,12 +60,25 @@ export class ReservarEnLineaComponent {
 
   constructor(private reservaService: ReservaServiceService) { }
 
-  isLoading = false; 
-  errorMessage: string | null = null; 
+  pasoActualReserva: number = 1
+
+  idReservas: String[] = [];
+
+  filtroFechas = (d: Date | null): boolean => {
+    if (!d || !this.fechaLlegada) return true;
+    return d > new Date(this.fechaLlegada);
+  };
+
+  isLoading = false;
+  errorMessage: string | null = null;
 
   fechaActual = new Date().toISOString().split('T')[0];
 
   mostrarFormularioCliente = false;
+
+  columnasMostradas: string[] = ['habitacion', 'tipo', 'fechas', 'dias', 'subtotal', 'acciones'];
+
+  dataSource = new MatTableDataSource<ItemFactura>([]);
 
   cliente: ClienteDTO = {
     Nombre: '',
@@ -81,16 +118,23 @@ export class ReservarEnLineaComponent {
 
   ngOnInit() {
     this.obtenerTiposHabitacion();
+    this.dataSource = new MatTableDataSource<ItemFactura>(this.factura.items);
   }
 
   obtenerHabitacionDisponible() {
+
+    if (this.factura.items.length >= 3) {
+      this.errorMessage = 'Has alcanzado el máximo de 3 habitaciones por reserva';
+      return;
+    }
+    
     this.isLoading = true;
     this.errorMessage = null;
-  
+
     this.reservaService.obtenerHabitacionDisponible(
       this.tipoHabitacionSeleccionado,
-      this.fechaLlegada,
-      this.fechaSalida
+      this.formatoFecha(this.fechaLlegada),
+      this.formatoFecha(this.fechaSalida)
     ).pipe(
       finalize(() => this.isLoading = false)
     ).subscribe({
@@ -98,6 +142,7 @@ export class ReservarEnLineaComponent {
         if (response) {
           this.habitacionEnReserva = response;
           this.agregarAFactura(response);
+          this.actualizarTabla();
         } else {
           this.errorMessage = 'No hay habitaciones disponibles para las fechas seleccionadas.';
         }
@@ -118,21 +163,30 @@ export class ReservarEnLineaComponent {
     );
   }
 
+  actualizarTabla() {
+    this.dataSource.data = [...this.factura.items];
+  }
+
   agregarAFactura(habitacion: HabitacionDTO) {
     if (this.factura.items.some(item => item.habitacion.idHabitacion === habitacion.idHabitacion)) {
-      return; 
+      return;
     }
 
-    this.factura.items.push({
+    const nuevosItems = [...this.factura.items];
+
+    nuevosItems.push({
       habitacion,
       tarifaDiaria: habitacion?.tipoDeHabitacion?.tarifaDiaria,
-      cantidadDias:  this.calcularDias(),
+      cantidadDias: this.calcularDias(),
       fechaLlegada: this.fechaLlegada,
       fechaSalida: this.fechaSalida
     });
 
+    this.factura.items = nuevosItems;
     this.calcularTotal();
+    this.actualizarTabla();
   }
+
 
   calcularDias(): number {
     if (!this.fechaLlegada || !this.fechaSalida) return 1;
@@ -151,13 +205,14 @@ export class ReservarEnLineaComponent {
 
     try {
       await this.reservaService.cambiarEstadoHabitacion(
-        idHabitacion, 
+        idHabitacion,
         'DISPONIBLE'
       ).toPromise();
 
       this.factura.items = this.factura.items.filter(
         i => i.habitacion.idHabitacion !== idHabitacion);
       this.calcularTotal();
+      this.actualizarTabla();
 
     } catch (error) {
       // manejar error
@@ -182,11 +237,12 @@ export class ReservarEnLineaComponent {
     try {
       const resultado = await this.reservaService.agregarReservaCompleta(reservaCompleta).toPromise();
       this.mostrarFormularioCliente = false;
-      this.factura = { items: [], total: 0 }; 
+      this.factura = { items: [], total: 0 };
 
       if (resultado) {
-        this.mostrarFormularioCliente = false;
-        this.factura = { items: [], total: 0 };
+        this.pasoActualReserva = 3;
+        this.idReservas = resultado;
+        this.limpiarDatos();
 
       } else {
         this.errorMessage = 'Ocurrió un error al procesar la reserva';
@@ -195,8 +251,50 @@ export class ReservarEnLineaComponent {
     } catch (error) {
       this.errorMessage = 'Error de conexión con el servidor. Intente nuevamente.';
     } finally {
-      this.isLoading = false;  // Desactivar carga siempre
+      this.isLoading = false; 
     }
+  }
+
+  limpiarDatos() {
+    this.habitacionEnReserva = {
+      idHabitacion: 0,
+      numero: 0,
+      tipoDeHabitacion: {
+        idTipoDeHabitacion: 0,
+        nombre: '',
+        tarifaDiaria: 0,
+      }
+    };
+    this.fechaLlegada = '';
+    this.fechaSalida = '';
+    this.tipoHabitacionSeleccionado = 0;
+    this.dataSource.data = [];
+    this.mostrarFormularioCliente = false;
+    this.factura.items.forEach(item => {
+      this.removerDeFactura(item.habitacion.idHabitacion);
+    });
+  }
+
+  limpiarDatosCliente(){
+    this.cliente = {
+      Nombre: '',
+      Apellidos: '',
+      Email: '',
+      TarjetaDePago: ''
+    };
+  }
+
+  private formatoFecha(fecha: string): string {
+
+    const fechaObj = new Date(fecha);
+
+    const year = fechaObj.getFullYear();
+    const month = String(fechaObj.getMonth() + 1).padStart(2, '0');
+    const day = String(fechaObj.getDate()).padStart(2, '0');
+
+    const fechaFormateada = `${year}-${month}-${day}`;
+
+    return fechaFormateada;
   }
 
 }
