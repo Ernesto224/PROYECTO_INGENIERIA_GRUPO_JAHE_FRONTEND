@@ -1,33 +1,45 @@
-# PROYECTO_INGENIERIA_GRUPO_JAHE_FRONTEND
-# Sistema de Reservación de Hoteles
+# PROYECTO_INGENIERIA_GRUPO_JAHE_FRONTEND Cliente Web
 
-## Descripción
-Este es un sistema de reservación de hoteles que permite a los usuarios buscar, reservar y administrar sus estadías en hoteles registrados. El sistema está dividido en dos repositorios independientes:
+## 🧾 Descripción
+Este frontend está diseñado para los **clientes del hotel**, ofreciendo una interfaz amigable e intuitiva para realizar reservas, explorar servicios y ver información relevante.
 
-- **Frontend:** Desarrollado en Angular, proporcionando una interfaz intuitiva para los usuarios.
-- **Backend:** Construido en .Net, encargado de la lógica del negocio y la gestión de datos.
+## 🌐 Tecnologías
+- Angular 18 con TypeScript
+- Angular Material (`@angular/material@^18.2.14`)
+- HTML & CSS (sin frameworks externos de estilos)
 
-El proyecto también se relaciona con un **drive** que almacena archivos relevantes, como documentación, diseños de bases de datos y otros recursos.
-
-## Tecnologías Utilizadas
-
-### Frontend
-- Angular v18
-- Tailwind CSS / Bootstrap
-- Consumo de API REST
-
-### Backend
-- .Net8 con Csharp
-- Base de datos: SQL Server
-- Arquitectura DDD + SOLID
-
-## Instalación y Configuración
-### Clonar los repositorios
-```bash
-# Clonar el frontend
-git clone https://github.com/Ernesto224/PROYECTO_INGENIERIA_GRUPO_JAHE_FRONTEND.git
-
-# Clonar el backend
-git clone https://github.com/Ernesto224/PROYECTO_INGENIERIA_GRUPO_JAHE_BACKEND.git
+## 📦 Librerías
+Instalación de Angular Material:
+```
+ng add @angular/material
 ```
 
+## ⚙️ Estructura del Proyecto
+```
+src/app/
+├── Core/
+│   ├── components/
+│   ├── models/
+│   └── services/
+├── layout/
+├── pages/
+├── app.routes.ts
+├── app.config.ts
+└── app.component.*
+```
+
+## ▶️ Ejecución
+```
+npm install (Instalar modulos de node js)
+ng serve
+```
+
+## 📎 Enlaces Relacionados
+- Repositorio Cliente Angular - PROYECTO_INGENIERIA_GRUPO_JAHE_BACKEND
+```
+https://github.com/Ernesto224/PROYECTO_INGENIERIA_GRUPO_JAHE_BACKEND.git
+```
+- Repositorio Administrador Angular - PROYECTO_INGENIERIA_GRUPO_JAHE_FRONTEND_ADMIN
+```
+https://github.com/Ernesto224/PROYECTO_INGENIERIA_GRUPO_JAHE_FRONTEND_ADMIN.git
+```
