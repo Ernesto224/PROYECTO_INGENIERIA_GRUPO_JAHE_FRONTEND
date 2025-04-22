@@ -1,7 +1,9 @@
 <div class="pagina animacion">
-  <div class="contenido">
-    <h2 class="titulo-pagina">Como llegar</h2>
-    <p>{{ datosDireccion?.descripcion }}</p>
-    <app-map></app-map>
-  </div>
+  @if (datosDireccion) {
+    <div class="contenido">
+      <h2 class="titulo-pagina">Como llegar</h2>
+      <p class="texto-descripcion">{{ datosDireccion.descripcion }}</p>
+      <app-map></app-map>
+    </div>
+  }
 </div>
