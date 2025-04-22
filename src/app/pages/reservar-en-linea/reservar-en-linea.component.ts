@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, signal } from '@angular/core';
 import { ReservaServiceService } from '../../Core/services/ReservaService/reserva-service.service';
 import { HabitacionDTO } from '../../Core/models/HabitacionDTO';
 import { NgModule } from '@angular/core';
@@ -7,6 +8,7 @@ import { FormsModule } from '@angular/forms';
 import { ClienteDTO } from '../../Core/models/ClienteDTO';
 import { ReservaDTO } from '../../Core/models/ReservaDTO';
 import { ReservaCompletaDTO } from '../../Core/models/ReservaCompletaDTO';
+import { AlternativaDeReservaDTO } from '../../Core/models/AlternativaDeReservaDTO';
 import { finalize } from 'rxjs/operators';
 import { TipoHabitacionDTO } from '../../Core/models/TipoHabitacionDTO';
 import { MatTableModule } from '@angular/material/table';
@@ -20,10 +22,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatCardModule } from '@angular/material/card';
-
-
-
-
+import { MatExpansionModule } from '@angular/material/expansion';
 
 export interface ItemFactura {
   habitacion: HabitacionDTO;
@@ -50,13 +49,16 @@ export interface Factura {
     MatNativeDateModule,
     MatInputModule,
     MatProgressSpinnerModule,
-    MatCardModule],
+    MatCardModule,
+    MatExpansionModule],
   providers: [ReservaServiceService],
   templateUrl: './reservar-en-linea.component.html',
   styleUrl: './reservar-en-linea.component.css'
 })
 
 export class ReservarEnLineaComponent {
+
+  public listaDeAlternativas!: AlternativaDeReservaDTO[];
 
   constructor(private reservaService: ReservaServiceService) { }
 
@@ -69,6 +71,7 @@ export class ReservarEnLineaComponent {
     return d > new Date(this.fechaLlegada);
   };
 
+  readonly panelOpenState = signal(false);
   isLoading = false;
   errorMessage: string | null = null;
 
@@ -127,7 +130,7 @@ export class ReservarEnLineaComponent {
       this.errorMessage = 'Has alcanzado el máximo de 3 habitaciones por reserva';
       return;
     }
-    
+
     this.isLoading = true;
     this.errorMessage = null;
 
@@ -144,8 +147,25 @@ export class ReservarEnLineaComponent {
           this.agregarAFactura(response);
           this.actualizarTabla();
         } else {
+          this.obtenerAlternativas();
           this.errorMessage = 'No hay habitaciones disponibles para las fechas seleccionadas.';
         }
+      },
+      error: (error) => {
+        this.errorMessage = 'Ocurrió un error al buscar habitaciones. Por favor intente nuevamente.';
+      }
+    });
+  }
+
+  public obtenerAlternativas = () => {
+    this.reservaService.obtenerAlternativas(
+      this.tipoHabitacionSeleccionado,
+      this.formatoFecha(this.fechaLlegada),
+      this.formatoFecha(this.fechaSalida)
+    ).subscribe({
+      next: (response) => {
+        this.listaDeAlternativas = response;
+        console.log(response);
       },
       error: (error) => {
         this.errorMessage = 'Ocurrió un error al buscar habitaciones. Por favor intente nuevamente.';
@@ -251,7 +271,7 @@ export class ReservarEnLineaComponent {
     } catch (error) {
       this.errorMessage = 'Error de conexión con el servidor. Intente nuevamente.';
     } finally {
-      this.isLoading = false; 
+      this.isLoading = false;
     }
   }
 
@@ -275,7 +295,7 @@ export class ReservarEnLineaComponent {
     });
   }
 
-  limpiarDatosCliente(){
+  limpiarDatosCliente() {
     this.cliente = {
       Nombre: '',
       Apellidos: '',
