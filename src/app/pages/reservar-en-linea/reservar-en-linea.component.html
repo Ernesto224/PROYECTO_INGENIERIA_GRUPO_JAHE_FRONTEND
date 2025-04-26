@@ -20,7 +20,7 @@
         <div class="contenedor-doble-formulario">
           <mat-form-field appearance="outline" class="fecha-input">
             <mat-label>Fecha Llegada*</mat-label>
-            <input matInput [matDatepicker]="pickerLlegada" [(ngModel)]="fechaLlegada">
+            <input matInput [matDatepicker]="pickerLlegada" [(ngModel)]="fechaLlegada" [min]="fechaActual">
             <mat-datepicker-toggle matSuffix [for]="pickerLlegada">
               <mat-icon matDatepickerToggleIcon>calendar_month</mat-icon>
             </mat-datepicker-toggle>
