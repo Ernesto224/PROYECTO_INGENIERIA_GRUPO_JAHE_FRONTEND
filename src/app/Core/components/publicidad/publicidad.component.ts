@@ -26,19 +26,19 @@ export class PublicidadComponent {
   }
 
   obtenerDatoPublicidades() {
-      this.publicidadService.obtenerDatosPublicidades().subscribe(
-        (response: Publicidad[]) => {
-          this.datosPublicidades = response;
-          console.log(this.datosPublicidades);
-        },
-        (error: any) => {
-          // manejar error
-        }
-     )};
+    this.publicidadService.obtenerDatosPublicidades().subscribe(
+      (response: Publicidad[]) => {
+        this.datosPublicidades = response;
+      },
+      (error: any) => {
+        // manejar error
+      }
+    )
+  };
 
 
 
-     // Funciones para el carrusel
+  // Funciones para el carrusel
   moveSlide(direction: number): void {
     if (!this.datosPublicidades?.length) {
       return;
@@ -55,17 +55,17 @@ export class PublicidadComponent {
   getCarruselStyle(): string {
     return `translateX(-${this.currentSlide * 100}%)`;
   }
-  
+
   iniciarCarrusel() {
     this.intervalo = setInterval(() => {
       this.moveSlide(1);
     }, 3000);
   }
-  
+
   detenerCarrusel() {
     clearInterval(this.intervalo);
   }
-  
+
   ngOnDestroy(): void {
     clearInterval(this.intervalo);
   }

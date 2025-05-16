@@ -83,7 +83,7 @@ export class ReservarEnLineaComponent implements OnInit {
   };
 
   readonly panelOpenState = signal(false);
-  
+
   isLoading = false;
   errorMessage: string | null = null;
 
@@ -193,9 +193,9 @@ export class ReservarEnLineaComponent implements OnInit {
     this.errorMessage = null;
 
     this.reservaService.obtenerHabitacionDisponible(
-      this.tipoHabitacionSeleccionado, // esta mal
-      this.formatoFecha(this.fechaLlegada), // esta mal
-      this.formatoFecha(this.fechaSalida) // esta mal
+      this.tipoHabitacionSeleccionado,
+      this.formatoFecha(this.fechaLlegada), 
+      this.formatoFecha(this.fechaSalida) 
     ).pipe(
       finalize(() => this.isLoading = false)
     ).subscribe({
