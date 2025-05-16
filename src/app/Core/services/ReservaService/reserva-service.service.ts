@@ -46,14 +46,6 @@ export class ReservaServiceService {
       ${idTipoDeHabitacion}&fechaLlegada=${fechaLlegada}&fechaSalida=${fechaSalida}`, { headers: headers });
   }
 
-  obtenerTiposDeHabitacion(): Observable<TipoHabitacionDTO> {
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-      accept: 'application/json',
-    });
-    return this.http.get<TipoHabitacionDTO>(`${this.publicidadUrl}/tipos-de-habitacion`, { headers });
-  }
-
   cambiarEstadoHabitacion(idHabitacion: number, estado: string): Observable<any> {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',

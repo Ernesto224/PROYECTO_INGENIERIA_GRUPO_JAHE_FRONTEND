@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { ChangeDetectionStrategy, signal } from '@angular/core';
 import { ReservaServiceService } from '../../Core/services/ReservaService/reserva-service.service';
+import { TarifasService } from '../../Core/services/TarifasService/tarifas.service';
 import { HabitacionDTO } from '../../Core/models/HabitacionDTO';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -60,7 +61,9 @@ export class ReservarEnLineaComponent {
 
   public listaDeAlternativas!: AlternativaDeReservaDTO[];
 
-  constructor(private reservaService: ReservaServiceService) { }
+  constructor(private reservaService: ReservaServiceService,
+    private tarifasService: TarifasService
+  ) { }
 
   pasoActualReserva: number = 1
 
@@ -174,7 +177,7 @@ export class ReservarEnLineaComponent {
   }
 
   obtenerTiposHabitacion() {
-    this.reservaService.obtenerTiposDeHabitacion().subscribe(
+    this.tarifasService.obtenerTarifas().subscribe(
       (response: any) => {
         this.tiposDeHabitacion = response;
       },
