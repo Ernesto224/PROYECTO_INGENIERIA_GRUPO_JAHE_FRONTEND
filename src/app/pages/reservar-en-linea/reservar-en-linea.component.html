@@ -6,11 +6,11 @@
 
     <div class="reserva-subcontainer">
 
-      <div *ngIf="pasoActualReserva == 1" class="formulario-reserva">
+      <div *ngIf="pasoActualReserva == 1" class="formulario-reserva" [formGroup]="reservaForm">
 
         <mat-form-field appearance="outline" class="w-full select-tipo-habitacion">
           <mat-label>Seleccionar tipo de habitación*</mat-label>
-          <mat-select [(ngModel)]="tipoHabitacionSeleccionado">
+          <mat-select formControlName="tipoHabitacion">
             <mat-option *ngFor="let tipo of tiposDeHabitacion" [value]="tipo.idTipoDeHabitacion">
               {{ tipo.idTipoDeHabitacion }} - {{ tipo.nombre }}
             </mat-option>
@@ -18,9 +18,10 @@
         </mat-form-field>
 
         <div class="contenedor-doble-formulario">
+
           <mat-form-field appearance="outline" class="fecha-input">
             <mat-label>Fecha Llegada*</mat-label>
-            <input matInput [matDatepicker]="pickerLlegada" [(ngModel)]="fechaLlegada" [min]="fechaActual">
+            <input matInput [matDatepicker]="pickerLlegada" formControlName="fechaLlegada" [min]="fechaActual">
             <mat-datepicker-toggle matSuffix [for]="pickerLlegada">
               <mat-icon matDatepickerToggleIcon>calendar_month</mat-icon>
             </mat-datepicker-toggle>
@@ -29,12 +30,13 @@
 
           <mat-form-field appearance="outline" class="fecha-input">
             <mat-label>Fecha Salida*</mat-label>
-            <input matInput [matDatepicker]="pickerSalida" [(ngModel)]="fechaSalida" [min]="fechaLlegada">
+            <input matInput [matDatepicker]="pickerSalida" formControlName="fechaSalida" [min]="fechaLlegada">
             <mat-datepicker-toggle matSuffix [for]="pickerSalida">
               <mat-icon matDatepickerToggleIcon>calendar_month</mat-icon>
             </mat-datepicker-toggle>
             <mat-datepicker #pickerSalida></mat-datepicker>
           </mat-form-field>
+          
         </div>
 
         <div class="contenedor-botones-formulario">
@@ -171,26 +173,26 @@
       </div>
 
 
-      <div *ngIf="pasoActualReserva == 2" class="formulario-cliente">
+      <div *ngIf="pasoActualReserva == 2" class="formulario-cliente" [formGroup]="clienteForm">
 
         <mat-form-field appearance="outline" class="w-full">
           <mat-label>Nombre*</mat-label>
-          <input matInput [(ngModel)]="cliente.Nombre" placeholder="Nombre" required>
+          <input matInput formControlName="nombre" placeholder="Nombre" required>
         </mat-form-field>
 
         <mat-form-field appearance="outline" class="w-full">
           <mat-label>Apellidos*</mat-label>
-          <input matInput [(ngModel)]="cliente.Apellidos" placeholder="Apellidos" required>
+          <input matInput formControlName="apellidos" placeholder="Apellidos" required>
         </mat-form-field>
 
         <mat-form-field appearance="outline" class="w-full">
           <mat-label>Email*</mat-label>
-          <input matInput [(ngModel)]="cliente.Email" type="email" placeholder="email@ejemplo.com" required>
+          <input matInput formControlName="email" type="email" placeholder="email@ejemplo.com" required>
         </mat-form-field>
 
         <mat-form-field appearance="outline" class="w-full">
           <mat-label>Tarjeta de pago*</mat-label>
-          <input matInput [(ngModel)]="cliente.TarjetaDePago" placeholder="Número de tarjeta" required>
+          <input matInput formControlName="tarjetaDePago" placeholder="Número de tarjeta" required>
         </mat-form-field>
 
         <div class="contenedor-botones-formulario">
