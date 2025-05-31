@@ -1,20 +1,20 @@
 import { Component } from '@angular/core';
-import { Publicidad } from '../../models/PublicidadDTO';
 import { CommonModule } from '@angular/common';
-import { PublicidadServiceService } from '../../services/PublicidadService/publicidad-service.service';
+import { OfertaServiceService } from '../../services/OfertaService/oferta-service.service';
+import { OfertaDTO } from '../../models/OfertaDTO';
 
 @Component({
-  selector: 'app-publicidad',
+  selector: 'app-oferta',
   standalone: true,
   imports: [CommonModule],
-  templateUrl: './publicidad.component.html',
-  styleUrl: './publicidad.component.css'
+  templateUrl: './oferta.component.html',
+  styleUrl: './oferta.component.css'
 })
-export class PublicidadComponent {
+export class OfertaComponent {
 
-  constructor(private publicidadService: PublicidadServiceService) { }
+  constructor(private ofertaService: OfertaServiceService) { }
 
-  datosPublicidades: Publicidad[] = [];
+  datosOfertas: OfertaDTO[] = [];
 
   currentSlide: number = 0;
   private intervalo: any;
@@ -26,9 +26,9 @@ export class PublicidadComponent {
   }
 
   obtenerDatoPublicidades() {
-    this.publicidadService.obtenerDatosPublicidades().subscribe(
-      (response: Publicidad[]) => {
-        this.datosPublicidades = response;
+    this.ofertaService.obtenerOfertasActivas().subscribe(
+      (response: OfertaDTO[]) => {
+        this.datosOfertas = response;
       },
       (error: any) => {
         // manejar error
@@ -37,18 +37,17 @@ export class PublicidadComponent {
   };
 
 
-
   // Funciones para el carrusel
   moveSlide(direction: number): void {
-    if (!this.datosPublicidades?.length) {
+    if (!this.datosOfertas?.length) {
       return;
     }
 
     this.currentSlide += direction;
-    if (this.currentSlide >= this.datosPublicidades.length) {
+    if (this.currentSlide >= this.datosOfertas.length) {
       this.currentSlide = 0;
     } else if (this.currentSlide < 0) {
-      this.currentSlide = this.datosPublicidades.length - 1;
+      this.currentSlide = this.datosOfertas.length - 1;
     }
   }
 

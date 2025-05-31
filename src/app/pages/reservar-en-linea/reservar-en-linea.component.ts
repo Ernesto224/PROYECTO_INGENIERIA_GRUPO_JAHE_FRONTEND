@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { ChangeDetectionStrategy, signal } from '@angular/core';
 import { ReservaServiceService } from '../../Core/services/ReservaService/reserva-service.service';
+import { TarifasService } from '../../Core/services/TarifasService/tarifas.service';
 import { HabitacionDTO } from '../../Core/models/HabitacionDTO';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -23,6 +24,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatCardModule } from '@angular/material/card';
 import { MatExpansionModule } from '@angular/material/expansion';
+import { OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 
 export interface ItemFactura {
   habitacion: HabitacionDTO;
@@ -50,17 +53,25 @@ export interface Factura {
     MatInputModule,
     MatProgressSpinnerModule,
     MatCardModule,
-    MatExpansionModule],
+    MatExpansionModule,
+    ReactiveFormsModule],
   providers: [ReservaServiceService],
   templateUrl: './reservar-en-linea.component.html',
   styleUrl: './reservar-en-linea.component.css'
 })
 
-export class ReservarEnLineaComponent {
+export class ReservarEnLineaComponent implements OnInit {
+
+  reservaForm!: FormGroup;
+  clienteForm!: FormGroup;
+
+  constructor(
+    private reservaService: ReservaServiceService,
+    private tarifasService: TarifasService,
+    private fb: FormBuilder
+  ) {}
 
   public listaDeAlternativas!: AlternativaDeReservaDTO[];
-
-  constructor(private reservaService: ReservaServiceService) { }
 
   pasoActualReserva: number = 1
 
@@ -72,6 +83,7 @@ export class ReservarEnLineaComponent {
   };
 
   readonly panelOpenState = signal(false);
+
   isLoading = false;
   errorMessage: string | null = null;
 
@@ -122,6 +134,52 @@ export class ReservarEnLineaComponent {
   ngOnInit() {
     this.obtenerTiposHabitacion();
     this.dataSource = new MatTableDataSource<ItemFactura>(this.factura.items);
+
+    // Inicializa formulario reactivo para reserva
+    this.reservaForm = this.fb.group({
+      tipoHabitacion: [this.tipoHabitacionSeleccionado],
+      fechaLlegada: [this.fechaLlegada],
+      fechaSalida: [this.fechaSalida]
+    });
+
+    // Inicializa formulario reactivo para cliente
+    this.clienteForm = this.fb.group({
+      nombre: [this.cliente.Nombre],
+      apellidos: [this.cliente.Apellidos],
+      email: [this.cliente.Email],
+      tarjetaDePago: [this.cliente.TarjetaDePago]
+    });
+
+    // Sincroniza valores del formulario con las variables
+    this.reservaForm.get('tipoHabitacion')?.valueChanges.subscribe(value => {
+      this.tipoHabitacionSeleccionado = value;
+    });
+
+    this.reservaForm.get('fechaLlegada')?.valueChanges.subscribe(value => {
+      this.fechaLlegada = value;
+    });
+
+    this.reservaForm.get('fechaSalida')?.valueChanges.subscribe(value => {
+      this.fechaSalida = value;
+    });
+
+    // Sincroniza formulario cliente con el objeto cliente
+    this.clienteForm.get('nombre')?.valueChanges.subscribe(value => {
+      this.cliente.Nombre = value;
+    });
+
+    this.clienteForm.get('apellidos')?.valueChanges.subscribe(value => {
+      this.cliente.Apellidos = value;
+    });
+
+    this.clienteForm.get('email')?.valueChanges.subscribe(value => {
+      this.cliente.Email = value;
+    });
+
+    this.clienteForm.get('tarjetaDePago')?.valueChanges.subscribe(value => {
+      this.cliente.TarjetaDePago = value;
+    });
+
   }
 
   obtenerHabitacionDisponible() {
@@ -136,8 +194,8 @@ export class ReservarEnLineaComponent {
 
     this.reservaService.obtenerHabitacionDisponible(
       this.tipoHabitacionSeleccionado,
-      this.formatoFecha(this.fechaLlegada),
-      this.formatoFecha(this.fechaSalida)
+      this.formatoFecha(this.fechaLlegada), 
+      this.formatoFecha(this.fechaSalida) 
     ).pipe(
       finalize(() => this.isLoading = false)
     ).subscribe({
@@ -174,7 +232,7 @@ export class ReservarEnLineaComponent {
   }
 
   obtenerTiposHabitacion() {
-    this.reservaService.obtenerTiposDeHabitacion().subscribe(
+    this.tarifasService.obtenerTarifas().subscribe(
       (response: any) => {
         this.tiposDeHabitacion = response;
       },

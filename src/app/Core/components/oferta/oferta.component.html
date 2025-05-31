@@ -1,0 +1,8 @@
+<div *ngIf="datosOfertas.length > 0" class="carrusel" 
+    (mouseover)="detenerCarrusel()" (mouseleave)="iniciarCarrusel()">
+    <div class="carrusel-container" [style.transform]="getCarruselStyle()">
+        <div class="item" *ngFor="let oferta of datosOfertas">
+            <img [src]="oferta.imagen.url" alt="Oferta" />
+        </div>
+    </div>
+</div>
