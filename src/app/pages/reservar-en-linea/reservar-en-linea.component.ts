@@ -243,6 +243,7 @@ export class ReservarEnLineaComponent implements OnInit {
 
   actualizarTabla() {
     this.dataSource.data = [...this.factura.items];
+    
   }
 
   agregarAFactura(habitacion: HabitacionDTO) {
@@ -334,6 +335,7 @@ export class ReservarEnLineaComponent implements OnInit {
   }
 
   limpiarDatos() {
+        this.errorMessage = null;
     this.habitacionEnReserva = {
       idHabitacion: 0,
       numero: 0,
@@ -354,6 +356,7 @@ export class ReservarEnLineaComponent implements OnInit {
   }
 
   limpiarDatosCliente() {
+        this.errorMessage = null;
     this.cliente = {
       Nombre: '',
       Apellidos: '',

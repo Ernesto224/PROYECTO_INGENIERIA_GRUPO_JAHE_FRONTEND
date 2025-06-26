@@ -1,12 +1,15 @@
 /* oferta.component.css */
 
+
+
 /* Contenedor principal del carrusel */
 .carrusel {
-  width: 200px;  /* Tamaño fijo del cuadro */
-  height: 60px;   /* Altura compacta */
+  width: 500px;  /* Tamaño fijo del cuadro */
+  height: 70px;   /* Altura compacta */
   margin-left: 400px; /* Centrado horizontal */
   position: relative;
   overflow: hidden;
+
 
 }
 
