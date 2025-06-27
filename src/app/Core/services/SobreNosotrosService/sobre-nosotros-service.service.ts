@@ -9,7 +9,7 @@ import { SobreNosotrosDTO } from '../../models/SobreNosotrosDTO';
 export class SobreNosotrosServiceService {
 
   constructor(private http: HttpClient) { }
-  sobreNosotrosUrl = 'http://www.hotel-jade-api.somee.com/api/SobreNosotros';
+  sobreNosotrosUrl = 'https://www.hotel-jade-api.somee.com/api/SobreNosotros';
   
   obtenerDatosSobreNosotros(): Observable<SobreNosotrosDTO> {
       const headers = new HttpHeaders({

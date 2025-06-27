@@ -8,7 +8,7 @@ import { ContactoDTO } from '../../models/ContactoDTO';
 })
 export class ContactoServiceService {
   constructor(private http: HttpClient) {}
-  contactanosUrl = 'http://www.hotel-jade-api.somee.com/api/Contacto';
+  contactanosUrl = 'https://www.hotel-jade-api.somee.com/api/Contacto';
 
   obtenerDatosContactanos(): Observable<ContactoDTO> {
     const headers = new HttpHeaders({

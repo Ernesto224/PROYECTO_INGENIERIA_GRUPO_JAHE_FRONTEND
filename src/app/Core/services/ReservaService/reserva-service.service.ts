@@ -14,7 +14,7 @@ export class ReservaServiceService {
 
   constructor(private http: HttpClient) { }
 
-  publicidadUrl = 'http://www.hotel-jade-api.somee.com/api/Reserva';
+  publicidadUrl = 'https://www.hotel-jade-api.somee.com/api/Reserva';
 
   obtenerHabitacionDisponible(idTipoDeHabitacion: number, fechaLlegada: String, fechaSalida: String): Observable<HabitacionDTO | null> {
     const headers = new HttpHeaders({
