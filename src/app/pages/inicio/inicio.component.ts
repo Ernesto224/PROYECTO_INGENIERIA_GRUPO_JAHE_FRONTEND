@@ -12,9 +12,9 @@ import { Home } from '../../Core/models/HomeDTO';
 
 export class InicioComponent implements OnInit {
 
-  constructor(private inicioService: InicioServiceService) { }
+  datosHome: Home | null = null;
 
-  datosHome!: Home;
+  constructor(private inicioService: InicioServiceService) { }
 
   ngOnInit(): void {
     this.obtenerDatosHome();
