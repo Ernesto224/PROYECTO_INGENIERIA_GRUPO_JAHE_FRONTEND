@@ -2,5 +2,8 @@
   "version": 2,
   "buildCommand": "npm run vercel-build",
   "installCommand": "npm install",
-  "outputDirectory": "dist/hotel-jade"
+  "outputDirectory": "dist/hotel-jade",
+  "routes": [
+    { "source": "/(.*)", "destination": "/" }
+  ]
 }
