@@ -2,7 +2,7 @@
 
 ## Hosting del proyecto
 ```
-https://proyecto-ingenieria-grupo-jahe-fron-rouge.vercel.app/inicio)
+https://proyecto-ingenieria-grupo-jahe-fron-rouge.vercel.app/inicio
 ```
 
 ## 🧾 Descripción
