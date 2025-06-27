@@ -1,5 +1,10 @@
 # PROYECTO_INGENIERIA_GRUPO_JAHE_FRONTEND Cliente Web
 
+## Hosting del proyecto
+```
+https://proyecto-ingenieria-grupo-jahe-fron-rouge.vercel.app/inicio)
+```
+
 ## 🧾 Descripción
 Este frontend está diseñado para los **clientes del hotel**, ofreciendo una interfaz amigable e intuitiva para realizar reservas, explorar servicios y ver información relevante.
 
