@@ -9,7 +9,7 @@ export class PublicidadServiceService {
 
   constructor(private http: HttpClient) { }
 
-  publicidadUrl = 'https://localhost:7169/api/Publicidad';
+  publicidadUrl = 'http://www.hotel-jade-api.somee.com/api/Publicidad';
   
   obtenerDatosPublicidades(): Observable<any[]> {
       const headers = new HttpHeaders({

@@ -10,7 +10,7 @@ export class OfertaServiceService {
 
   constructor(private http: HttpClient) { }
 
-  ofertaUrl = 'https://localhost:7169/api/Oferta';
+  ofertaUrl = 'http://www.hotel-jade-api.somee.com/api/Oferta';
 
   obtenerOfertasActivas(): Observable<OfertaDTO[]> {
     const headers = new HttpHeaders({

@@ -9,7 +9,7 @@ import { DireccionDTO } from '../../models/DireccionDTO';
 export class ComoLlegarServiceService {
 
   constructor(private http: HttpClient) { }
-  comoLlegarUrl = 'https://localhost:7169/api/Direccion';
+  comoLlegarUrl = 'http://www.hotel-jade-api.somee.com/api/Direccion';
   
   obtenerComoLlegar(): Observable<DireccionDTO> {
       const headers = new HttpHeaders({

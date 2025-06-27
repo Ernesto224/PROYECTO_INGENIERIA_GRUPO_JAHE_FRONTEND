@@ -9,7 +9,7 @@ export class InicioServiceService {
 
   constructor(private http: HttpClient) { }
 
-  homeUrl = 'https://localhost:7169/api/Home';
+  homeUrl = 'http://www.hotel-jade-api.somee.com/api/Home';
 
   obtenerDatosHome(): Observable<any> {
     const headers = new HttpHeaders({
