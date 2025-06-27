@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Loader } from "@googlemaps/js-api-loader";
-
+import { MatCardModule } from '@angular/material/card';
+import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-map',
   standalone: true,
-  imports: [],
+  imports: [CommonModule, MatCardModule],
   templateUrl: './map.component.html',
   styleUrls: ['./map.component.css']
 })
