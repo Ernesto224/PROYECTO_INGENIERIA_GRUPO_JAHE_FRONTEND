@@ -1,4 +1,4 @@
-import { Component, OnInit, Signal, signal } from '@angular/core';
+import { Component, OnInit, signal, computed } from '@angular/core';
 import { SobreNosotrosServiceService } from '../../Core/services/SobreNosotrosService/sobre-nosotros-service.service';
 import { SobreNosotrosDTO } from '../../Core/models/SobreNosotrosDTO';
 import { CommonModule } from '@angular/common';
@@ -8,7 +8,7 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './sobre-nosotros.component.html',
-  styleUrl: './sobre-nosotros.component.css',
+  styleUrls: ['./sobre-nosotros.component.css'],
 })
 export class SobreNosotrosComponent implements OnInit {
   datosSobreNosotros!: SobreNosotrosDTO;
@@ -22,10 +22,16 @@ export class SobreNosotrosComponent implements OnInit {
 
   obtenerDatosSobreNosotros() {
     this.sobreNosotrosService.obtenerDatosSobreNosotros().subscribe(
-      (response: SobreNosotrosDTO) => {
-        this.datosSobreNosotros = response;
-        this.imagenSeleccionada.set(response.imagenes[0]?.url || null);
+    {
+      next: (data)=>{
+        this.datosSobreNosotros = data;
+        this.imagenSeleccionada.set(data.imagenes[0]?.url || null);
+      }, error: (Error)=>{
+        console.error("Hubo un error al obtener la informacion", Error);
+      }, complete: ()=>{
+        console.log("Se complete la operación");
       }
+    }
     );
   }
 

@@ -1,3 +1,266 @@
 <div class="pagina animacion">
-    <p>Reservar en Línea</p>
+
+  <h1 class="titulo-pagina">Reservar Habitación</h1>
+
+  <div class="reserva-container">
+
+    <div class="reserva-subcontainer">
+
+      <div *ngIf="pasoActualReserva == 1" class="formulario-reserva" [formGroup]="reservaForm">
+
+        <mat-form-field appearance="outline" class="w-full select-tipo-habitacion">
+          <mat-label>Seleccionar tipo de habitación*</mat-label>
+          <mat-select formControlName="tipoHabitacion">
+            <mat-option *ngFor="let tipo of tiposDeHabitacion" [value]="tipo.idTipoDeHabitacion">
+              {{ tipo.idTipoDeHabitacion }} - {{ tipo.nombre }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <div class="contenedor-doble-formulario">
+
+          <mat-form-field appearance="outline" class="fecha-input">
+            <mat-label>Fecha Llegada*</mat-label>
+            <input matInput [matDatepicker]="pickerLlegada" formControlName="fechaLlegada" [min]="fechaActual">
+            <mat-datepicker-toggle matSuffix [for]="pickerLlegada">
+              <mat-icon matDatepickerToggleIcon>calendar_month</mat-icon>
+            </mat-datepicker-toggle>
+            <mat-datepicker #pickerLlegada></mat-datepicker>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="fecha-input">
+            <mat-label>Fecha Salida*</mat-label>
+            <input matInput [matDatepicker]="pickerSalida" formControlName="fechaSalida" [min]="fechaLlegada">
+            <mat-datepicker-toggle matSuffix [for]="pickerSalida">
+              <mat-icon matDatepickerToggleIcon>calendar_month</mat-icon>
+            </mat-datepicker-toggle>
+            <mat-datepicker #pickerSalida></mat-datepicker>
+          </mat-form-field>
+          
+        </div>
+
+        <div class="contenedor-botones-formulario">
+          <button mat-flat-button class="actualizar-boton" type="button" (click)="obtenerHabitacionDisponible()">Buscar
+            habitación</button>
+          <!-- CAMBIAR EL COLOR DEL BOTON DE LIMPIAR -->
+          <button mat-flat-button class="cancelar-boton" type="button" (click)="limpiarDatos()">Cancelar</button>
+        </div>
+
+        <div *ngIf="isLoading" class="overlay-loading">
+          <div class="spinner"></div>
+          <p>Procesando...</p>
+        </div>
+
+        <div *ngIf="errorMessage" class="error-message">
+          {{ errorMessage }}
+        </div>
+
+        <div *ngIf="errorMessage && listaDeAlternativas" style="margin-top: 1em;">
+          <mat-accordion>
+            <mat-expansion-panel (opened)="panelOpenState.set(true)" (closed)="panelOpenState.set(false)">
+              <mat-expansion-panel-header>
+                <mat-panel-title> Alternativas disponibles </mat-panel-title>
+                <mat-panel-description>
+                  Presione para {{panelOpenState() ? 'cerrar' : 'desplegar'}}
+                </mat-panel-description>
+              </mat-expansion-panel-header>
+
+              <!-- Contenedor scrollable responsivo -->
+              <div class="card-scroll-container">
+                <ng-container *ngFor="let item of listaDeAlternativas">
+                  <mat-card class="alternativa-card">
+                    <mat-card-header>
+                      <mat-card-title>{{ item.tipoDeHabitacionDTO.nombre }}</mat-card-title>
+                      <mat-card-subtitle>Tarifa: ${{ item.tipoDeHabitacionDTO.tarifaDiaria }}</mat-card-subtitle>
+                    </mat-card-header>
+
+                    <mat-card-content>
+                      <p><strong>Desde:</strong> {{ item.inicio | date: 'MM/dd/yyyy' }} -
+                        <strong>Hasta:</strong> {{ item.fin | date: 'MM/dd/yyyy' }}</p>
+                    </mat-card-content>
+                  </mat-card>
+                </ng-container>
+              </div>
+            </mat-expansion-panel>
+          </mat-accordion>
+        </div>
+
+        <div class="tabla-reserva-container">
+          <div class="factura-container" *ngIf="factura.items.length > 0">
+
+            <table mat-table [dataSource]="factura.items" class="w-full">
+
+              <ng-container matColumnDef="habitacion">
+                <th mat-header-cell *matHeaderCellDef> Habitación </th>
+                <td mat-cell *matCellDef="let item"> {{item.habitacion.numero}} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="tipo">
+                <th mat-header-cell *matHeaderCellDef> Tipo </th>
+                <td mat-cell *matCellDef="let item">
+                  {{item.habitacion.tipoDeHabitacion.nombre}}
+                  <div *ngIf="item.ofertaAplicada" class="oferta-badge">
+                    {{item.ofertaAplicada.nombre}} ({{item.ofertaAplicada.porcentaje}}% OFF)
+                  </div>
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="fechas">
+                <th mat-header-cell *matHeaderCellDef> Fechas </th>
+                <td mat-cell *matCellDef="let item">
+                  {{ item.fechaLlegada | date:'shortDate' }} - {{ item.fechaSalida | date:'shortDate' }}
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="dias">
+                <th mat-header-cell *matHeaderCellDef> Días </th>
+                <td mat-cell *matCellDef="let item">
+                  <div *ngIf="item.ofertaAplicada; else sinOferta">
+                    <div>{{item.diasSinOferta}} días (tarifa normal)</div>
+                    <div>{{item.diasConOferta}} días (con descuento)</div>
+                  </div>
+                  <ng-template #sinOferta>
+                    {{item.cantidadDias}} días
+                  </ng-template>
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="subtotal">
+                <th mat-header-cell *matHeaderCellDef> Subtotal </th>
+                <td mat-cell *matCellDef="let item">
+                  <div *ngIf="item.ofertaAplicada; else subtotalSimple">
+                    <div>{{item.tarifaDiaria | currency}} x {{item.diasSinOferta}} = {{item.subtotalNormal | currency}}
+                    </div>
+                    <div>{{item.tarifaDiaria * (1 - item.descuento) | currency}} x {{item.diasConOferta}} =
+                      {{item.subtotalOferta | currency}}</div>
+                    <div class="total-item">{{item.total | currency}}</div>
+                  </div>
+                  <ng-template #subtotalSimple>
+                    {{item.tarifaDiaria | currency}} x {{item.cantidadDias}} = {{(item.tarifaDiaria * item.cantidadDias)
+                    |
+                    currency}}
+                  </ng-template>
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="acciones">
+                <th mat-header-cell *matHeaderCellDef></th>
+                <td mat-cell *matCellDef="let item">
+                  <button mat-icon-button color="warn" (click)="removerDeFactura(item.habitacion.idHabitacion)">
+                    <mat-icon>close</mat-icon>
+                  </button>
+                </td>
+              </ng-container>
+
+              <tr mat-header-row *matHeaderRowDef="columnasMostradas"></tr>
+              <tr mat-row *matRowDef="let row; columns: columnasMostradas;"></tr>
+
+            </table>
+
+            <div class="total-container" *ngIf="factura.items.length > 0">
+              <span class="total-label">Total:</span>
+              <span class="total-amount">{{factura.total | currency}}</span>
+              <button mat-flat-button *ngIf="factura.items.length >= 1" (click)="pasoActualReserva = 2"
+                class="btn-mostrar-formulario">
+                Proceder a Pagar
+              </button>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <div *ngIf="pasoActualReserva == 2" class="formulario-cliente" [formGroup]="clienteForm">
+
+        <mat-form-field appearance="outline" class="w-full">
+          <mat-label>Nombre*</mat-label>
+          <input matInput formControlName="nombre" placeholder="Nombre" required>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="w-full">
+          <mat-label>Apellidos*</mat-label>
+          <input matInput formControlName="apellidos" placeholder="Apellidos" required>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="w-full">
+          <mat-label>Email*</mat-label>
+          <input matInput formControlName="email" type="email" placeholder="email@ejemplo.com" required>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="w-full">
+          <mat-label>Tarjeta de pago*</mat-label>
+          <input matInput formControlName="tarjetaDePago" placeholder="Número de tarjeta" required>
+        </mat-form-field>
+
+        <div class="contenedor-botones-formulario">
+          <button mat-flat-button color="primary" (click)="enviarReservaCompleta()" [disabled]="isLoading"
+            class="btn-confirmar">
+            <span *ngIf="!isLoading">Confirmar Reserva</span>
+            <span *ngIf="isLoading">Procesando...</span>
+          </button>
+
+          <!-- Botón Volver -->
+          <button mat-flat-button (click)="pasoActualReserva = 1" class="btn-volver">
+            Volver
+          </button>
+        </div>
+
+        <div *ngIf="isLoading" class="overlay-loading">
+          <mat-spinner diameter="50"></mat-spinner>
+          <p>Procesando reserva...</p>
+        </div>
+
+        <div *ngIf="errorMessage" class="error-message">
+          <mat-icon>error_outline</mat-icon>
+          {{ errorMessage }}
+        </div>
+      </div>
+
+
+      <div *ngIf="pasoActualReserva == 3" class="reserva-confirmada-container">
+        <mat-card class="reserva-confirmada-card">
+          <mat-card-header>
+            <mat-card-title class="reserva-confirmada-title">
+              <mat-icon class="success-icon">check_circle</mat-icon>
+              Reserva Confirmada
+            </mat-card-title>
+          </mat-card-header>
+
+          <mat-card-content class="reserva-confirmada-content">
+            <p class="confirmacion-texto">
+              <mat-icon>person</mat-icon>
+              <strong>Gracias por su reserva.</strong>
+            </p>
+
+            <p class="confirmacion-texto">
+              <mat-icon>receipt</mat-icon>
+              <strong>Números de comprobante:</strong>
+              <span class="comprobante-numero">{{ idReservas.join(', ') }}</span>
+            </p>
+
+            <p class="confirmacion-texto">
+              <mat-icon>email</mat-icon>
+              <strong>Recibirá un correo de confirmación en:</strong>
+              <span class="email-text">{{cliente.Email}}</span>
+            </p>
+          </mat-card-content>
+
+          <mat-card-actions>
+            <button mat-flat-button color="primary" (click)="pasoActualReserva = 1" (click)="limpiarDatosCliente()"
+              class="btn-nueva-reserva">
+              <mat-icon>add</mat-icon>
+              Realizar otra reserva
+            </button>
+          </mat-card-actions>
+        </mat-card>
+      </div>
+
+    </div>
+
+
+  </div>
+
 </div>
