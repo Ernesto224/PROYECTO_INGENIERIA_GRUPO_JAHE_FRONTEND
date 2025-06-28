@@ -4,11 +4,12 @@ import { TipoDeHabitacionDTO } from '../../Core/models/TipoDeHabitacionDTO';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-tarifas',
   standalone: true,
-  imports: [CommonModule, MatIconModule, MatButtonModule],
+  imports: [CommonModule, MatIconModule, MatButtonModule, RouterModule],
   templateUrl: './tarifas.component.html',
   styleUrls: ['./tarifas.component.css']
 })
