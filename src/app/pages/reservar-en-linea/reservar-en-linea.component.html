@@ -158,6 +158,8 @@
         <mat-step [stepControl]="clienteForm" label="Datos del cliente">
           <div class="formulario-cliente" [formGroup]="clienteForm">
 
+            <!-- Sección 1: Datos Personales -->
+            <h3 class="section-title">Información personal</h3>
             <div class="form-section">
               <mat-form-field appearance="outline">
                 <mat-label>Nombre*</mat-label>
@@ -174,9 +176,7 @@
                   Apellidos son requeridos
                 </mat-error>
               </mat-form-field>
-            </div>
 
-            <div class="form-section">
               <mat-form-field appearance="outline">
                 <mat-label>Email*</mat-label>
                 <input matInput formControlName="email" type="email" required>
@@ -187,14 +187,50 @@
                   Ingresa un email válido
                 </mat-error>
               </mat-form-field>
+            </div>
 
+            <!-- Sección 2: Datos de Pago -->
+            <h3 class="section-title">Información de pago</h3>
+            <div class="form-section">
               <mat-form-field appearance="outline">
                 <mat-label>Tarjeta de crédito*</mat-label>
-                <input matInput formControlName="tarjetaDePago" required>
+                <input matInput formControlName="tarjetaDePago" required (input)="formatCreditCard($event)"
+                  maxlength="19" placeholder="0000 0000 0000 0000">
                 <mat-error *ngIf="clienteForm.get('tarjetaDePago')?.hasError('required')">
                   Tarjeta de crédito es requerida
                 </mat-error>
+                <mat-error *ngIf="clienteForm.get('tarjetaDePago')?.hasError('pattern')">
+                  Formato de tarjeta inválido (16 dígitos)
+                </mat-error>
               </mat-form-field>
+
+              <div class="payment-details">
+                <mat-form-field appearance="outline">
+                  <mat-label>Fecha de vencimiento*</mat-label>
+                  <input matInput formControlName="fechaVencimiento" required placeholder="MM/AA"
+                    (input)="formatExpiryDate($event)" maxlength="5">
+                  <mat-error *ngIf="clienteForm.get('fechaVencimiento')?.hasError('required')">
+                    Fecha de vencimiento es requerida
+                  </mat-error>
+                  <mat-error *ngIf="clienteForm.get('fechaVencimiento')?.hasError('pattern')">
+                    Formato inválido (MM/AA)
+                  </mat-error>
+                  <mat-error *ngIf="clienteForm.get('fechaVencimiento')?.hasError('expired')">
+                    La tarjeta ha expirado
+                  </mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                  <mat-label>CVV*</mat-label>
+                  <input matInput formControlName="cvv" required maxlength="4" type="password" placeholder="123">
+                  <mat-error *ngIf="clienteForm.get('cvv')?.hasError('required')">
+                    CVV es requerido
+                  </mat-error>
+                  <mat-error *ngIf="clienteForm.get('cvv')?.hasError('pattern')">
+                    CVV debe ser 3 o 4 dígitos
+                  </mat-error>
+                </mat-form-field>
+              </div>
             </div>
 
             <div class="button-section">

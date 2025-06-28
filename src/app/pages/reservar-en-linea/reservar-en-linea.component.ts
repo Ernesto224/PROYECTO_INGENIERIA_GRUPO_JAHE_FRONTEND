@@ -5,7 +5,7 @@ import { TarifasService } from '../../Core/services/TarifasService/tarifas.servi
 import { HabitacionDTO } from '../../Core/models/HabitacionDTO';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { AbstractControl, FormsModule } from '@angular/forms';
 import { ClienteDTO } from '../../Core/models/ClienteDTO';
 import { ReservaDTO } from '../../Core/models/ReservaDTO';
 import { ReservaCompletaDTO } from '../../Core/models/ReservaCompletaDTO';
@@ -73,7 +73,7 @@ export class ReservarEnLineaComponent implements OnInit {
     private reservaService: ReservaServiceService,
     private tarifasService: TarifasService,
     private fb: FormBuilder
-  ) {}
+  ) { }
 
   public listaDeAlternativas!: AlternativaDeReservaDTO[];
 
@@ -146,7 +146,9 @@ export class ReservarEnLineaComponent implements OnInit {
       nombre: ['', Validators.required],
       apellidos: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
-      tarjetaDePago: ['', Validators.required]
+      tarjetaDePago: ['', [Validators.required, Validators.pattern(/^\d{16}$/)]],
+      cvv: ['', [Validators.required, Validators.pattern(/^\d{3,4}$/)]],
+      fechaVencimiento: ['', [Validators.required, Validators.pattern(/^(0[1-9]|1[0-2])\/?([0-9]{2})$/)]]
     });
 
     // Sincroniza valores del formulario con las variables
@@ -182,6 +184,43 @@ export class ReservarEnLineaComponent implements OnInit {
     });
   }
 
+  formatCreditCard(event: any) {
+    let value = event.target.value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
+
+    if (value.length > 0) {
+      value = value.match(new RegExp('.{1,4}', 'g')).join(' ');
+    }
+
+    event.target.value = value;
+    this.clienteForm.get('tarjetaDePago')?.setValue(value.replace(/\s/g, ''));
+  }
+
+  formatExpiryDate(event: any) {
+    let value = event.target.value.replace(/\D/g, '');
+
+    if (value.length > 2) {
+      value = value.substring(0, 2) + '/' + value.substring(2, 4);
+    }
+
+    event.target.value = value;
+    this.clienteForm.get('fechaVencimiento')?.setValue(value);
+  }
+
+  validateCardExpiry(control: AbstractControl): { [key: string]: boolean } | null {
+    const value = control.value;
+    if (!value) return null;
+
+    const [month, year] = value.split('/');
+    const expiryDate = new Date(parseInt('20' + year), parseInt(month));
+    const currentDate = new Date();
+
+    if (expiryDate < currentDate) {
+      return { 'expired': true };
+    }
+
+    return null;
+  }
+
   obtenerHabitacionDisponible() {
     if (this.factura.items.length >= 3) {
       this.errorMessage = 'Has alcanzado el máximo de 3 habitaciones por reserva';
@@ -198,8 +237,8 @@ export class ReservarEnLineaComponent implements OnInit {
 
     this.reservaService.obtenerHabitacionDisponible(
       this.tipoHabitacionSeleccionado,
-      this.formatoFecha(this.fechaLlegada), 
-      this.formatoFecha(this.fechaSalida) 
+      this.formatoFecha(this.fechaLlegada),
+      this.formatoFecha(this.fechaSalida)
     ).pipe(
       finalize(() => this.isLoading = false)
     ).subscribe({

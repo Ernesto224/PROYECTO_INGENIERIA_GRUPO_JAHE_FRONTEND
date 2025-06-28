@@ -226,3 +226,51 @@
     font-size: 1.8rem;
   }
 }
+
+/* Estilos para la sección de pago */
+.payment-details {
+  display: flex;
+  gap: 20px;
+  width: 100%;
+  margin-top: 15px;
+}
+
+.payment-details mat-form-field {
+  flex: 1;
+  min-width: 120px;
+}
+
+/* Ajustes para responsive */
+@media (max-width: 768px) {
+  .payment-details {
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .payment-details mat-form-field {
+    width: 100%;
+  }
+}
+
+/* Estilo para el campo de tarjeta de crédito */
+.mat-form-field.tarjeta-credito {
+  width: 100%;
+}
+
+/* Estilo para los títulos de sección */
+.section-title {
+  font-family: "Caveat", cursive;
+  font-size: 1.8rem;
+  color: #007A5E;
+  margin: 30px 0 15px 0;
+  width: 100%;
+  border-bottom: 2px solid #f0f0f0;
+  padding-bottom: 8px;
+}
+
+@media (max-width: 768px) {
+  .section-title {
+    font-size: 1.6rem;
+    margin: 20px 0 10px 0;
+  }
+}
