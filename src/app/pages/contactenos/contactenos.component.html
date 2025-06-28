@@ -1,11 +1,38 @@
 <div class="pagina animacion">
   @if (datosContacto) {
-    <div class="pagina">
-      <h2 class="titulo-pagina">Contáctenos</h2>
-      <h2 class="subtitulo">Hotel JAHE</h2>
-      <h2 class="info">Tel: {{ datosContacto.telefono1 + ' / ' + datosContacto.telefono2 }}</h2>
-      <h2 class="info">Apartado Postal: {{ datosContacto.apartadoPostal }}</h2>
-      <h2 class="info">Email: {{ datosContacto.email }}</h2>
+    <div class="contacto-container">
+      <div class="contacto-header">
+        <h1 class="titulo-pagina">Contáctenos</h1>
+        <p class="subtitulo">Estamos aquí para ayudarte</p>
+      </div>
+
+      <div class="contacto-info">
+        
+        <div class="info-card">
+          <mat-icon class="info-icon">phone</mat-icon>
+          <div class="info-text">
+            <h3>Teléfonos</h3>
+            <p>{{ datosContacto.telefono1 }}</p>
+            <p>{{ datosContacto.telefono2 }}</p>
+          </div>
+        </div>
+
+        <div class="info-card">
+          <mat-icon class="info-icon">email</mat-icon>
+          <div class="info-text">
+            <h3>Correo Electrónico</h3>
+            <p>{{ datosContacto.email }}</p>
+          </div>
+        </div>
+
+        <div class="info-card">
+          <mat-icon class="info-icon">location_on</mat-icon>
+          <div class="info-text">
+            <h3>Dirección Postal</h3>
+            <p>{{ datosContacto.apartadoPostal }}</p>
+          </div>
+        </div>
+      </div>
     </div>
   }
 </div>

@@ -1,16 +1,22 @@
 <div class="pagina animacion">
-
-    <h2 class="titulo-pagina">Facilidades</h2>
+    <div class="facilities-header">
+        <h2 class="titulo-pagina">Nuestras Facilidades</h2>
+        <p class="subtitle">Descubre todo lo que el Hotel Jade tiene para ofrecerte</p>
+    </div>
 
     <div class="facilities-container">
         <mat-card class="facility-card" *ngFor="let facility of facilidades">
             <div class="facility-content">
-                <img class="mat-card-image" [src]="facility.imagen.url" alt="Facility Image">
-                <mat-card-content>
-                    <p>{{ facility.descripcion }}</p>
+                <div class="image-container">
+                    <img class="facility-image" 
+                         loading="lazy" 
+                         [src]="facility.imagen.url">
+                    <div class="image-overlay"></div>
+                </div>
+                <mat-card-content class="facility-text">
+                    <p>{{facility.descripcion}}</p>
                 </mat-card-content>
             </div>
-        </mat-card>        
+        </mat-card>
     </div>
-
 </div>
