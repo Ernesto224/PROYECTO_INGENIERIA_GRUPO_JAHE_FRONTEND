@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, OnDestroy, ViewChild } from '@angular/core';
 import { ChangeDetectionStrategy, signal } from '@angular/core';
 import { ReservaServiceService } from '../../Core/services/ReservaService/reserva-service.service';
 import { TarifasService } from '../../Core/services/TarifasService/tarifas.service';
@@ -25,7 +25,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatCardModule } from '@angular/material/card';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatStepperModule, MatStepper } from '@angular/material/stepper';
-import { OnInit } from '@angular/core';
+import { OnInit, HostListener } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 
 export interface ItemFactura {
@@ -63,7 +63,7 @@ export interface Factura {
   templateUrl: './reservar-en-linea.component.html',
   styleUrl: './reservar-en-linea.component.css'
 })
-export class ReservarEnLineaComponent implements OnInit {
+export class ReservarEnLineaComponent implements OnInit, OnDestroy {
   @ViewChild('stepper') stepper!: MatStepper;
 
   reservaForm!: FormGroup;
@@ -130,35 +130,50 @@ export class ReservarEnLineaComponent implements OnInit {
     }
   };
 
+  @HostListener('window:beforeunload', ['$event'])
+  handleBeforeUnload(event: Event) {
+    this.liberarHabitaciones();
+  }
+
+  @HostListener('window:pagehide', ['$event'])
+  handlePageHide(event: Event) {
+    this.liberarHabitaciones();
+  }
+
+  @HostListener('window:unload', ['$event'])
+  handleUnload(event: Event) {
+    this.liberarHabitaciones();
+  }
+
   ngOnInit() {
     this.obtenerTiposHabitacion();
     this.dataSource = new MatTableDataSource<ItemFactura>(this.factura.items);
 
-    // Inicializa formulario reactivo para reserva
     this.reservaForm = this.fb.group({
       tipoHabitacion: ['', Validators.required],
       fechaLlegada: ['', Validators.required],
       fechaSalida: ['', Validators.required]
     });
 
-    // Inicializa formulario reactivo para cliente
     this.clienteForm = this.fb.group({
       nombre: ['', Validators.required],
       apellidos: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       tarjetaDePago: ['', [Validators.required, Validators.pattern(/^\d{16}$/)]],
       cvv: ['', [Validators.required, Validators.pattern(/^\d{3,4}$/)]],
-      fechaVencimiento: ['', [Validators.required, Validators.pattern(/^(0[1-9]|1[0-2])\/?([0-9]{2})$/)]]
+      fechaVencimiento: ['', [
+        Validators.required,
+        Validators.pattern(/^(0[1-9]|1[0-2])\/?([0-9]{2})$/),
+        this.validateCardExpiry.bind(this)
+      ]]
     });
 
-    // Sincroniza valores del formulario con las variables
     this.reservaForm.get('tipoHabitacion')?.valueChanges.subscribe(value => {
       this.tipoHabitacionSeleccionado = value;
     });
 
     this.reservaForm.get('fechaLlegada')?.valueChanges.subscribe(value => {
       this.fechaLlegada = value;
-      // Resetear fecha de salida cuando cambia la de llegada
       this.reservaForm.get('fechaSalida')?.setValue('');
     });
 
@@ -166,7 +181,6 @@ export class ReservarEnLineaComponent implements OnInit {
       this.fechaSalida = value;
     });
 
-    // Sincroniza formulario cliente con el objeto cliente
     this.clienteForm.get('nombre')?.valueChanges.subscribe(value => {
       this.cliente.Nombre = value;
     });
@@ -182,6 +196,10 @@ export class ReservarEnLineaComponent implements OnInit {
     this.clienteForm.get('tarjetaDePago')?.valueChanges.subscribe(value => {
       this.cliente.TarjetaDePago = value;
     });
+  }
+
+  ngOnDestroy(): void {
+    this.liberarHabitaciones();
   }
 
   formatCreditCard(event: any) {
@@ -208,13 +226,18 @@ export class ReservarEnLineaComponent implements OnInit {
 
   validateCardExpiry(control: AbstractControl): { [key: string]: boolean } | null {
     const value = control.value;
-    if (!value) return null;
+    if (!value || !value.match(/^(0[1-9]|1[0-2])\/?([0-9]{2})$/)) {
+      return null;
+    }
 
     const [month, year] = value.split('/');
-    const expiryDate = new Date(parseInt('20' + year), parseInt(month));
+    const expiryDate = new Date(parseInt(`20${year}`), parseInt(month));
     const currentDate = new Date();
 
-    if (expiryDate < currentDate) {
+    const expiryYearMonth = new Date(expiryDate.getFullYear(), expiryDate.getMonth(), 1);
+    const currentYearMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
+
+    if (expiryYearMonth < currentYearMonth) {
       return { 'expired': true };
     }
 
@@ -412,6 +435,18 @@ export class ReservarEnLineaComponent implements OnInit {
       TarjetaDePago: ''
     };
     this.clienteForm.reset();
+  }
+
+  private liberarHabitaciones(): void {
+    this.factura.items.forEach(item => {
+      this.reservaService.cambiarEstadoHabitacion(
+        item.habitacion.idHabitacion,
+        'DISPONIBLE'
+      ).subscribe({
+        next: () => console.log(`Habitación ${item.habitacion.numero} liberada`),
+        error: (error) => console.error(`Error al liberar habitación ${item.habitacion.numero}`, error)
+      });
+    });
   }
 
   private formatoFecha(fecha: string): string {

@@ -216,7 +216,7 @@
                     Formato inválido (MM/AA)
                   </mat-error>
                   <mat-error *ngIf="clienteForm.get('fechaVencimiento')?.hasError('expired')">
-                    La tarjeta ha expirado
+                    La tarjeta ha expirado o la fecha es inválida
                   </mat-error>
                 </mat-form-field>
 
