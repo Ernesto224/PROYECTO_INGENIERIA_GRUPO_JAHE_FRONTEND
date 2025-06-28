@@ -124,8 +124,12 @@
 
                 <ng-container matColumnDef="subtotal">
                   <mat-header-cell *matHeaderCellDef>Subtotal</mat-header-cell>
-                  <mat-cell *matCellDef="let item">
-                    ${{ item.tarifaDiaria }} x {{ item.cantidadDias }} = ${{ item.tarifaDiaria * item.cantidadDias }}
+                  <mat-cell *matCellDef="let item" (mouseenter)="showOfertaBubble(item, $event)"
+                    (mouseleave)="hideOfertaBubble(item)" class="subtotal-cell">
+                    ${{ item.tarifaDiaria }} x {{ item.cantidadDias }} = ${{ item.precioTotal }}
+                    <app-comic-bubble *ngIf="item.showBubble" [message]="getOfertaMessage(item)"
+                      [visible]="item.showBubble" [style.left.px]="bubblePosition.x" [style.top.px]="bubblePosition.y">
+                    </app-comic-bubble>
                   </mat-cell>
                 </ng-container>
 
@@ -216,7 +220,7 @@
                     Formato inválido (MM/AA)
                   </mat-error>
                   <mat-error *ngIf="clienteForm.get('fechaVencimiento')?.hasError('expired')">
-                    La tarjeta ha expirado
+                    La tarjeta ha expirado o la fecha es inválida
                   </mat-error>
                 </mat-form-field>
 
