@@ -274,3 +274,26 @@
     margin: 20px 0 10px 0;
   }
 }
+
+
+
+
+/* Ajustes para el contenedor de la tabla */
+.reserva-table-section {
+  overflow: visible !important; /* Importante para que el globo no se corte */
+}
+
+/* Estilo para las celdas de la tabla */
+.mat-cell {
+  overflow: visible !important;
+}
+
+/* Ajuste para el contenedor principal */
+.pagina {
+  overflow: visible !important;
+}
+
+/* Opcional: Efecto hover para las celdas */
+.mat-cell:hover {
+  background-color: rgba(0, 168, 107, 0.05);
+}

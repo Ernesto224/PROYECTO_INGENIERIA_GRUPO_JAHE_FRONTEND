@@ -6,6 +6,7 @@ import { HabitacionDTO } from '../../models/HabitacionDTO';
 import { TipoHabitacionDTO } from '../../models/TipoHabitacionDTO';
 import { ReservaCompletaDTO } from '../../models/ReservaCompletaDTO';
 import { AlternativaDeReservaDTO } from '../../models/AlternativaDeReservaDTO';
+import { HabitacionDisponibleDTO } from '../../models/HabitacionDisponibleDTO';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +17,7 @@ export class ReservaServiceService {
 
   publicidadUrl = 'https://www.hotel-jade-api.somee.com/api/Reserva';
 
-  obtenerHabitacionDisponible(idTipoDeHabitacion: number, fechaLlegada: String, fechaSalida: String): Observable<HabitacionDTO | null> {
+  obtenerHabitacionDisponible(idTipoDeHabitacion: number, fechaLlegada: String, fechaSalida: String): Observable<HabitacionDisponibleDTO | null> {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       accept: 'application/json',
@@ -29,7 +30,7 @@ export class ReservaServiceService {
         if (typeof response === 'string') {
           return null;
         }
-        return response as HabitacionDTO;
+        return response as HabitacionDisponibleDTO;
       }),
       catchError(error => {
         return of(null);

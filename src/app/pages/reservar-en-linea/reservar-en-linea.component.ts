@@ -27,6 +27,11 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { MatStepperModule, MatStepper } from '@angular/material/stepper';
 import { OnInit, HostListener } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { HabitacionDisponibleDTO } from '../../Core/models/HabitacionDisponibleDTO';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { OfertaDTO } from '../../Core/models/OfertaDTO';
+import { ComicBubbleComponent } from '../../Core/components/comic-bubble/comic-bubble.component';
+
 
 export interface ItemFactura {
   habitacion: HabitacionDTO;
@@ -57,7 +62,8 @@ export interface Factura {
     MatCardModule,
     MatExpansionModule,
     MatStepperModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    ComicBubbleComponent
   ],
   providers: [ReservaServiceService],
   templateUrl: './reservar-en-linea.component.html',
@@ -72,7 +78,8 @@ export class ReservarEnLineaComponent implements OnInit, OnDestroy {
   constructor(
     private reservaService: ReservaServiceService,
     private tarifasService: TarifasService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private snackBar: MatSnackBar
   ) { }
 
   public listaDeAlternativas!: AlternativaDeReservaDTO[];
@@ -106,9 +113,12 @@ export class ReservarEnLineaComponent implements OnInit, OnDestroy {
     items: {
       habitacion: HabitacionDTO,
       tarifaDiaria: number,
+      precioTotal: number,
       cantidadDias: number,
       fechaLlegada: string,
-      fechaSalida: string
+      fechaSalida: string,
+      oferta?: OfertaDTO;
+      showBubble?: boolean;
     }[],
     total: number
   } = { items: [], total: 0 };
@@ -267,7 +277,8 @@ export class ReservarEnLineaComponent implements OnInit, OnDestroy {
     ).subscribe({
       next: (response) => {
         if (response) {
-          this.habitacionEnReserva = response;
+          console.log('Habitación disponible:', response);
+          this.habitacionEnReserva = response.habitacionDTO;
           this.agregarAFactura(response);
           this.actualizarTabla();
         } else {
@@ -311,7 +322,8 @@ export class ReservarEnLineaComponent implements OnInit, OnDestroy {
     this.dataSource.data = [...this.factura.items];
   }
 
-  agregarAFactura(habitacion: HabitacionDTO) {
+  agregarAFactura(habitacionDisponible: HabitacionDisponibleDTO) {
+    const habitacion = habitacionDisponible.habitacionDTO;
     if (this.factura.items.some(item => item.habitacion.idHabitacion === habitacion.idHabitacion)) {
       return;
     }
@@ -321,9 +333,12 @@ export class ReservarEnLineaComponent implements OnInit, OnDestroy {
     nuevosItems.push({
       habitacion,
       tarifaDiaria: habitacion?.tipoDeHabitacion?.tarifaDiaria,
+      precioTotal: habitacionDisponible.precioTotal,
       cantidadDias: this.calcularDias(),
       fechaLlegada: this.fechaLlegada,
-      fechaSalida: this.fechaSalida
+      fechaSalida: this.fechaSalida,
+      oferta: habitacionDisponible.ofertaDTO,
+      showBubble: false // Inicializar como false
     });
 
     this.factura.items = nuevosItems;
@@ -435,6 +450,38 @@ export class ReservarEnLineaComponent implements OnInit, OnDestroy {
       TarjetaDePago: ''
     };
     this.clienteForm.reset();
+  }
+
+  bubblePosition = { x: 0, y: 0 };
+  hoverTimeout: any;
+
+  showOfertaBubble(item: any, event: MouseEvent) {
+    clearTimeout(this.hoverTimeout);
+
+    const cell = event.currentTarget as HTMLElement;
+    const rect = cell.getBoundingClientRect();
+    const tableRect = cell.closest('mat-table')?.getBoundingClientRect();
+
+    // Calcula la posición relativa a la tabla
+    this.bubblePosition = {
+      x: rect.left - (tableRect?.left || 0) + (rect.width / 2) - 100,
+      y: rect.top - (tableRect?.top || 0) - 120 
+    };
+
+    item.showBubble = true;
+  }
+
+  hideOfertaBubble(item: any) {
+    this.hoverTimeout = setTimeout(() => {
+      item.showBubble = false;
+    }, 200);
+  }
+
+  getOfertaMessage(item: any): string {
+    if (item.oferta) {
+      return `¡OFERTA APLICADA!\n${item.oferta.nombre}\n\n Descuento: ${item.oferta.porcentaje}%`;
+    }
+    return 'No hay ofertas aplicadas\npara esta habitación';
   }
 
   private liberarHabitaciones(): void {
