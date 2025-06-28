@@ -1,25 +1,33 @@
 <div class="pagina animacion">
   @if (datosSobreNosotros) {
-    <div  class="pagina">
+    <div class="sobre-nosotros-container">
       <h2 class="titulo-pagina">Sobre Nosotros</h2>
       <p class="texto-descripcion">{{ datosSobreNosotros.descripcion }}</p>
+      
       <div class="contenedor-galeria">
-        <div class="galeria">
-          <h2 class="titulo-pagina">Galería</h2>
+        <!-- Imagen principal grande a la izquierda -->
+        <div class="imagen-principal-container">
           <img
-            [src]="imagenSeleccionada()"
+            [src]="imagenSeleccionada() || datosSobreNosotros.imagenes[0].url"
             alt="Imagen seleccionada"
-            *ngIf="imagenSeleccionada()"
+            class="imagen-principal"
+            loading="lazy"
           />
         </div>
-        <div class="conjunto-imagenes">
-          @for (imagen of datosSobreNosotros.imagenes; track imagen.idImagen) {
-            <img
-              [src]="imagen.url"
-              alt="Imagen de galería"
-              (click)="seleccionarImagen(imagen.url)"
-            />
-            }
+        
+        <!-- Cuadrícula de 4x4 a la derecha -->
+        <div class="cuadricula-miniaturas">
+          @for (imagen of datosSobreNosotros.imagenes; track imagen.idImagen; let i = $index) {
+            <div class="celda-miniatura" (click)="seleccionarImagen(imagen.url)">
+              <img
+                [src]="imagen.url"
+                alt="Imagen de galería"
+                class="miniatura"
+                loading="lazy"
+                [class.miniatura-activa]="(imagenSeleccionada() || datosSobreNosotros.imagenes[0].url) === imagen.url"
+              />
+            </div>
+          }
         </div>
       </div>
     </div>

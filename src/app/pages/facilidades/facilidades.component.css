@@ -1,56 +1,197 @@
+/* Estilos generales */
+.facilities-header {
+    text-align: center;
+    margin-bottom: 40px;
+    padding: 0 20px;
+}
+
+.titulo-pagina {
+    font-family: "Caveat", cursive;
+    font-size: 3rem;
+    color: #007A5E;
+    margin-bottom: 10px;
+}
+
+.subtitle {
+    font-size: 1.2rem;
+    color: #555;
+    max-width: 700px;
+    margin: 0 auto;
+    line-height: 1.6;
+}
+
 .facilities-container {
-    margin-top: 20px;
-    display: flex;
-    padding: 10px;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 25px;
     width: 100%;
-    align-items: center;
-    flex-direction: column;
-    gap: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
 }
 
+/* Tarjeta de facilidad - Versión más horizontal */
 .facility-card {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    background-color: white;
-    cursor: pointer;
-    transition: transform 0.3s ease-in-out;
-    width: 95%;
+    border-radius: 12px !important;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1) !important;
+    border: 1px solid rgba(0, 168, 107, 0.1);
+    height: 220px; /* Altura fija más reducida */
 }
 
-/*
 .facility-card:hover {
-    transform: scale(1.1);
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 168, 107, 0.2) !important;
 }
-*/
 
 .facility-content {
     display: flex;
-    flex-direction: row;
-    align-items: center;
     width: 100%;
+    height: 100%;
 }
 
-.mat-card-image {
-    width: 30em;
-    height: 15em;
+/* Contenedor de imagen - Más ancho y menos alto */
+.image-container {
+    position: relative;
+    flex: 0 0 45%; /* Ocupa 45% del ancho */
+    min-height: 100%; /* Toma toda la altura de la tarjeta */
+}
+
+.facility-image {
+    width: 100%;
+    height: 100%;
     object-fit: cover;
-    margin: 10px;
-    border-radius: 15px;
+    display: block;
 }
 
-mat-card-content {
+.image-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(to right, rgba(0, 168, 107, 0.1), transparent);
+}
+
+/* Contenido de texto */
+.facility-text {
     flex: 1;
-    text-align: left;
-    width: 10em;
-    height: 10em;
-    width: 100%;
+    padding: 20px !important;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    overflow: hidden;
 }
 
+.facility-text h3 {
+    color: #007A5E;
+    font-size: 1.4rem;
+    margin-bottom: 12px;
+    font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
 
-@media all and (max-width:775px){
+.facility-text p {
+    color: #555;
+    line-height: 1.6;
+    margin-bottom: 15px;
+    display: -webkit-box;
+    -webkit-line-clamp: 3; /* Limita a 3 líneas */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    font-size: 0.95rem;
+}
+
+/* Iconos de facilidades */
+.facility-icons {
+    display: flex;
+    gap: 12px;
+    margin-top: auto; /* Empuja los iconos hacia abajo */
+}
+
+.facility-icons mat-icon {
+    color: #00A86B;
+    background: rgba(0, 168, 107, 0.1);
+    padding: 6px;
+    border-radius: 50%;
+    font-size: 20px;
+    width: 24px;
+    height: 24px;
+}
+
+.image-container {
+    overflow: hidden;
+}
+
+.facility-image {
+    transition: transform 0.5s ease;
+}
+
+.facility-card:hover .facility-image {
+    transform: scale(1.05);
+}
+
+/* Responsive Design */
+@media (max-width: 992px) {
+    .facility-card {
+        height: auto; /* Altura automática en tablet */
+    }
+    
     .facility-content {
         flex-direction: column;
     }
-   
+    
+    .image-container {
+        flex: 0 0 250px; /* Altura fija para la imagen en tablet */
+        width: 100%;
+    }
+    
+    .facility-text p {
+        -webkit-line-clamp: 2; /* Solo 2 líneas en tablet */
+    }
+}
+
+@media (max-width: 768px) {
+    .titulo-pagina {
+        font-size: 2.5rem;
+    }
+    
+    .subtitle {
+        font-size: 1.1rem;
+    }
+    
+    .facilities-container {
+        padding: 0 15px;
+        gap: 20px;
+    }
+    
+    .image-container {
+        flex: 0 0 200px; /* Altura más pequeña en móvil */
+    }
+}
+
+@media (max-width: 576px) {
+    .titulo-pagina {
+        font-size: 2rem;
+    }
+    
+    .facility-text h3 {
+        font-size: 1.3rem;
+    }
+    
+    .facility-text p {
+        font-size: 0.9rem;
+    }
+    
+    .facility-icons mat-icon {
+        padding: 5px;
+        font-size: 18px;
+    }
+    
+    .image-container {
+        flex: 0 0 180px;
+    }
 }

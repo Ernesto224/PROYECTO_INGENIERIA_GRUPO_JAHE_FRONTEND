@@ -1,22 +1,117 @@
-.pagina {
-    padding: 40px;
-    text-align: left;
+/* Estilos generales */
+.contacto-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 30px 20px;
 }
+
+.contacto-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
 .titulo-pagina {
-    font-family: "Caveat", cursive;
-    font-optical-sizing: auto;
-    font-weight: 800;
-    font-style: bold;
-    font-size: 40px;
-    color: rgb(79, 79, 79);
+  font-family: "Caveat", cursive;
+  font-size: 3rem;
+  color: #007A5E;
+  margin-bottom: 10px;
 }
 
 .subtitulo {
-    font-size: 20px;
-    margin-bottom: 15px;
+  font-size: 1.3rem;
+  color: #555;
 }
 
-.info {
-    font-size: 18px;
-    margin: 10px 0;
+/* Contenedor de información */
+.contacto-info {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Tarjetas de información */
+.info-card {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 25px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+}
+
+.info-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 168, 107, 0.15);
+}
+
+/* Iconos y texto */
+.info-icon {
+  color: #00A86B;
+  font-size: 2.2rem;
+  width: auto;
+  height: auto;
+  flex-shrink: 0;
+}
+
+.info-text h3 {
+  color: #007A5E;
+  font-size: 1.3rem;
+  margin-bottom: 10px;
+  font-weight: 500;
+}
+
+.info-text p {
+  color: #555;
+  line-height: 1.6;
+  margin: 5px 0;
+  font-size: 1.05rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .titulo-pagina {
+    font-size: 2.5rem;
+  }
+  
+  .subtitulo {
+    font-size: 1.1rem;
+  }
+  
+  .contacto-container {
+    padding: 20px 15px;
+  }
+  
+  .info-card {
+    padding: 20px;
+  }
+  
+  .info-icon {
+    font-size: 2rem;
+  }
+  
+  .hotel-name {
+    font-size: 2rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .titulo-pagina {
+    font-size: 2.2rem;
+  }
+  
+  .info-card {
+    flex-direction: column;
+    text-align: center;
+    gap: 15px;
+  }
+  
+  .info-text h3 {
+    font-size: 1.2rem;
+  }
+  
+  .info-text p {
+    font-size: 1rem;
+  }
 }

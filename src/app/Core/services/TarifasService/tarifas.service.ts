@@ -9,7 +9,7 @@ import { Observable } from 'rxjs';
 export class TarifasService {
 
   private http = inject(HttpClient);
-  private urlBase = "http://www.hotel-jade-api.somee.com/api/Tarifas";
+  private urlBase = "https://www.hotel-jade-api.somee.com/api/Tarifas";
 
   constructor() { }
 

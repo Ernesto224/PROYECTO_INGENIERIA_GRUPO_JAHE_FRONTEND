@@ -1,9 +1,18 @@
 <div class="pagina animacion">
   @if (datosDireccion) {
-    <div class="contenido">
-      <h2 class="titulo-pagina">Como llegar</h2>
-      <p class="texto-descripcion">{{ datosDireccion.descripcion }}</p>
-      <app-map></app-map>
+    <div class="como-llegar-container">
+      <div class="header-section">
+        <h1 class="titulo-pagina">Cómo Llegar al Hotel Jade</h1>
+      </div>
+
+      <div class="contenido-principal">
+        <p class="texto-descripcion">{{ datosDireccion.descripcion }}</p>
+        
+        <div class="mapa-section">
+          <h3 class="mapa-titulo">Nuestra Ubicación</h3>
+          <app-map></app-map>
+        </div>
+      </div>
     </div>
   }
 </div>

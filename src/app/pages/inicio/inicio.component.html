@@ -1,12 +1,23 @@
 <div class="pagina animacion">
-
     <div class="inicio-pagina">
-        <img [src]="datosHome?.imagen?.url" alt="">
-       
-        <h2 class="titulo-pagina">Bienvenidos a Hotel JADE</h2>
+        <!-- Hero Image con texto y botón -->
+        <div class="hero-image-container">
+            <img [src]="datosHome?.imagen?.url" alt="Hotel Jade en la playa" class="hero-image">
+            <div class="hero-content">
+                <h1 class="hero-title">Bienvenidos a Hotel JADE</h1>
+                <p class="hero-subtitle">Descubre tu paraíso frente al mar</p>
+                <button mat-raised-button class="hero-button" routerLink="/reservar-en-linea">
+                    RESERVAR AHORA
+                    <mat-icon>arrow_forward</mat-icon>
+                </button>
+            </div>
+        </div>
 
-        <p>{{ datosHome?.descripcion }}</p>
+        <!-- Contenido principal -->
+        <div class="content-container">
+            <div class="welcome-section">
+                <p class="welcome-text">{{ datosHome?.descripcion }}</p>
+            </div>
+        </div>
     </div>
-    
-   
 </div>

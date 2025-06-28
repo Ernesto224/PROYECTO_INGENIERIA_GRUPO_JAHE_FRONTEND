@@ -1,45 +1,79 @@
+/* Estilos base del header */
+.header-principal {
+  background-color: white;
+  padding: 15px 25px;
+  width: 100%;
+  min-height: 80px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 15px;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+  position: relative;
+  z-index: 100;
+}
 
-.header-principal{
-    background-color: white;
-    padding: 25px;
-    width: 100%;
-    height: 80px;
-    max-height: 200px;
+/* Contenedor del logo y título */
+.header-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 200px;
+}
 
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
+.header-principal img {
+  width: 60px;
+  height: auto;
+  transition: transform 0.3s ease;
+}
 
+.header-principal img:hover {
+  transform: scale(1.05);
+}
+
+.header-principal h1 {
+  font-family: "Caveat", cursive;
+  font-weight: 700;
+  font-size: clamp(1.5rem, 4vw, 2rem);
+  color: #4f4f4f;
+  margin: 0;
+  white-space: nowrap;
+}
+
+/* Contenedor del carrusel de ofertas */
+.header-offer-container {
+  flex: 1;
+  min-width: 250px;
+  max-width: 600px;
+  margin: 0 15px;
+}
+
+/* Media Queries para responsive */
+@media (max-width: 992px) {
+  .header-principal {
+    padding: 15px;
+  }
   
-
-    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
-    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+  .header-offer-container {
+    order: 3;
+    width: 100%;
+    max-width: 100%;
+    margin: 10px 0 0 0;
+  }
 }
 
-
-.header-principal img{
-    width: 80px;
-    padding: 0px 10px;
+@media (max-width: 576px) {
+  .header-principal {
+    padding: 10px;
+    min-height: 70px;
+  }
+  
+  .header-principal img {
+    width: 50px;
+  }
+  
+  .header-brand {
+    min-width: auto;
+  }
 }
-
-
-.header-principal h1{
-font-family: "Caveat", cursive;
-  font-optical-sizing: auto;
-  font-weight: 800;
-  font-style: bold;
-  font-size: 30px;
-  color: rgb(79, 79, 79);
-}
-
-
-
-
-
-
-
-
-
-
-
-
